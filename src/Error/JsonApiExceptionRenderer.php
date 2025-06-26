@@ -5,7 +5,7 @@ namespace CrudJsonApi\Error;
 
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
-use Cake\Core\Exception\Exception;
+use Cake\Core\Exception\CakeException;
 use Cake\Error\Debugger;
 use Cake\Http\Response;
 use Cake\Utility\Inflector;
@@ -193,7 +193,7 @@ class JsonApiExceptionRenderer extends ExceptionRenderer
 
         try {
             return (string)json_encode($result, JSON_PRETTY_PRINT);
-        } catch (Exception $e) {
+        } catch (CakeException $e) {
             $result['debug']['message'] = $e->getMessage();
             $result['debug']['trace'] = [
                 'error' => 'Unable to encode stack trace',

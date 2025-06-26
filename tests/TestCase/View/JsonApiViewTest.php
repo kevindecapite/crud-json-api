@@ -147,7 +147,7 @@ class JsonApiViewTest extends TestCase
 
         // still here, create view with viewVars for response with resource(s)
         $controller->setName($tableName); // e.g. Countries
-        $table = $controller->loadModel(); // table object
+        $table = $controller->fetchModel(); // table object
 
         // fetch data from test viewVar normally found in subject
         $subject = new Subject(['event' => new Event('Crud.beforeHandle')]);
@@ -157,7 +157,7 @@ class JsonApiViewTest extends TestCase
         } else {
             $subject->entity = $findResult;
         }
-        $subject->query = $table->query();
+        $subject->query = $table->selectQuery();
 
         // create required '_entities' and '_associations' viewVars normally
         // produced and set by the JsonApiListener

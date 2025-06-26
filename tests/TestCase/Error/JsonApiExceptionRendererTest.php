@@ -5,7 +5,7 @@ namespace CrudJsonApi\Test\TestCase\Error;
 
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
-use Cake\Core\Exception\Exception;
+use Cake\Core\Exception\CakeException;
 use Cake\Core\Plugin;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
@@ -52,7 +52,7 @@ class JsonApiExceptionRendererTest extends TestCase
      */
     public function testRenderWithNonValidationError()
     {
-        $exception = new Exception('Hello World');
+        $exception = new CakeException('Hello World');
 
         $controller = $this->getMockBuilder(Controller::class)
             ->onlyMethods(['render'])
@@ -179,7 +179,7 @@ class JsonApiExceptionRendererTest extends TestCase
 
                 // First call should throw an exception.
                 if ($callCount === 1) {
-                    throw new Exception('woot');
+                    throw new CakeException('woot');
                 }
 
                 // Second call should succeed and return response with status.
