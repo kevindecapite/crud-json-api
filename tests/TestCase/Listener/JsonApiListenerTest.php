@@ -120,14 +120,14 @@ class JsonApiListenerTest extends TestCase
             ->getMock();
 
         $listener
-            ->expects($this->at(1))
+            ->expects($this->exactly(2))
             ->method('_checkRequestType')
-            ->willReturn(false); // for asserting missing JSON API Accept header
+            ->willReturnCallback(function () use (&$callCount): bool {
+                $callCount++;
 
-        $listener
-            ->expects($this->at(3))
-            ->method('_checkRequestType')
-            ->willReturn(true); // for asserting valid JSON API Accept header
+                // First call asserts missing JSON API Accept header; second call asserts valid JSON API Accept header.
+                return $callCount === 2;
+            });
 
         // assert that listener does nothing if JSON API Accept header is missing
         $result = $listener->implementedEvents();
@@ -1091,24 +1091,17 @@ class JsonApiListenerTest extends TestCase
             ->getMock();
 
         $request
-            ->expects($this->at(0))
+            ->expects($this->exactly(4))
             ->method('getMethod')
-            ->willReturn('GET');
+            ->willReturnCallback(function () use (&$callCount): string {
+                $callCount++;
 
-        $request
-            ->expects($this->at(1))
-            ->method('getMethod')
-            ->willReturn('POST');
-
-        $request
-            ->expects($this->at(2))
-            ->method('getMethod')
-            ->will($this->returnValue('POST'));
-
-        $request
-            ->expects($this->at(3))
-            ->method('getMethod')
-            ->willReturn('PATCH');
+                return match ($callCount) {
+                    1 => 'GET',
+                    2, 3 => 'POST',
+                    4 => 'PATCH',
+                };
+            });
 
         $controller->setRequest($request);
 

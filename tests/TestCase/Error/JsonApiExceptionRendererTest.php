@@ -167,21 +167,24 @@ class JsonApiExceptionRendererTest extends TestCase
             ],
         ]);
 
-        $res = new Response();
-
         $response = $this->getMockBuilder('Cake\Http\Response')
             ->setMethods(['withStatus'])
             ->getMock();
         $response
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('withStatus')
-            ->will($this->throwException(new Exception('woot')));
-        $response
-            ->expects($this->at(1))
-            ->method('withStatus')
-            ->will($this->returnCallback(function ($input) use ($res) {
+            ->willReturnCallback(function ($input) use (&$callCount): Response {
+                $res = new Response();
+                $callCount++;
+
+                // First call should throw an exception.
+                if ($callCount === 1) {
+                    throw new Exception('woot');
+                }
+
+                // Second call should succeed and return response with status.
                 return $res->withStatus($input);
-            }));
+            });
 
         $controller->response = $response;
 
@@ -334,19 +337,14 @@ class JsonApiExceptionRendererTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $apiQueryLogListener
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('getQueryLogs')
             ->with()
-            ->willReturn([]);
-        $apiQueryLogListener
-            ->expects($this->at(1))
-            ->method('getQueryLogs')
-            ->with()
-            ->willReturn(
-                [
-                    'dummy' => 'log-entry',
-                ]
-            );
+            ->willReturnCallback(function () use (&$callCount): array {
+                $callCount++;
+
+                return $callCount === 1 ? [] : ['dummy' => 'log-entry'];
+            });
 
         $renderer = $this->getMockBuilder('CrudJsonApi\Error\JsonApiExceptionRenderer')
             ->onlyMethods(['_getApiQueryLogListenerObject'])
