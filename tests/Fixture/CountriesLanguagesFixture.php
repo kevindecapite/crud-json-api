@@ -5,13 +5,6 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 class CountriesLanguagesFixture extends TestFixture
 {
-    public $fields = [
-        'id' => ['type' => 'integer'],
-        'country_id' => ['type' => 'integer', 'length' => 3, 'null' => false],
-        'language_id' => ['type' => 'integer', 'length' => 100, 'null' => false],
-        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]],
-    ];
-
     public $records = [
         ['country_id' => 1, 'language_id' => 1],
         ['country_id' => 1, 'language_id' => 2],

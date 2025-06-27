@@ -13,16 +13,12 @@
       <directory suffix=".ctp">./src/</directory>
     </include>
   </coverage>
+  <extensions>
+    <extension class="\Cake\TestSuite\Fixture\PHPUnitExtension" />
+  </extensions>
   <testsuites>
     <testsuite name="Crud">
       <directory>./tests/</directory>
     </testsuite>
   </testsuites>
-  <listeners>
-    <listener class="\Cake\TestSuite\Fixture\FixtureInjector">
-      <arguments>
-        <object class="\Cake\TestSuite\Fixture\FixtureManager"/>
-      </arguments>
-    </listener>
-  </listeners>
 </phpunit>
