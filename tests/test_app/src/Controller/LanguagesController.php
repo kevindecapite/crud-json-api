@@ -34,7 +34,7 @@ class LanguagesController extends Controller
                 'listeners' => [
                     'CrudJsonApi.JsonApi',
                 ],
-            ]
+            ],
         );
     }
 }

@@ -34,7 +34,7 @@ class CurrenciesController extends Controller
                 'listeners' => [
                     'CrudJsonApi.JsonApi',
                 ],
-            ]
+            ],
         );
     }
 }

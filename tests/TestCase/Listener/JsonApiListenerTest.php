@@ -59,7 +59,7 @@ class JsonApiListenerTest extends TestCase
             '/',
             static function (RouteBuilder $routeBuilder) {
                 $routeBuilder->fallbacks();
-            }
+            },
         );
 
         $this->_JsonApiDecoderFixtures = Plugin::path('CrudJsonApi') . 'tests' . DS . 'Fixture' . DS . 'JsonApiDecoder';
@@ -863,8 +863,6 @@ class JsonApiListenerTest extends TestCase
             ->method('_controller')
             ->willReturn($controller);
 
-        $entity = new Entity();
-
         $subject = $this
             ->getMockBuilder(Subject::class)
             ->getMock();
@@ -1059,7 +1057,7 @@ class JsonApiListenerTest extends TestCase
         $this->expectException(BadRequestException::class);
         $this->expectExceptionMessage(
             'Missing request data required for POST and PATCH methods, as well as DELETE methods to relationship endpoints. ' .
-            'Make sure that you are sending a request body and that it is valid JSON.'
+            'Make sure that you are sending a request body and that it is valid JSON.',
         );
         $controller = $this
             ->getMockBuilder(Controller::class)
@@ -1162,7 +1160,7 @@ class JsonApiListenerTest extends TestCase
 
         // assert success (single entity, no relationships)
         $jsonApiFixture = file_get_contents(
-            $this->_JsonApiDecoderFixtures . DS . 'incoming-country-no-relationships.json'
+            $this->_JsonApiDecoderFixtures . DS . 'incoming-country-no-relationships.json',
         );
 
         $jsonApiArray = json_decode($jsonApiFixture, true);
@@ -1176,7 +1174,7 @@ class JsonApiListenerTest extends TestCase
 
         // assert success (single entity, multiple relationships, hasMany ignored for now)
         $jsonApiFixture = file_get_contents(
-            $this->_JsonApiDecoderFixtures . DS . 'incoming-country-mixed-relationships.json'
+            $this->_JsonApiDecoderFixtures . DS . 'incoming-country-mixed-relationships.json',
         );
 
         $jsonApiArray = json_decode($jsonApiFixture, true);
@@ -1198,7 +1196,7 @@ class JsonApiListenerTest extends TestCase
 
         // assert success for relationships with null/empty data
         $jsonApiFixture = file_get_contents(
-            $this->_JsonApiDecoderFixtures . DS . 'incoming-country-mixed-relationships.json'
+            $this->_JsonApiDecoderFixtures . DS . 'incoming-country-mixed-relationships.json',
         );
 
         $jsonApiArray = json_decode($jsonApiFixture, true);

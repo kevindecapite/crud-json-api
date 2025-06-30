@@ -91,7 +91,7 @@ class RelationshipsIntegrationTest extends JsonApiBaseTestCase
                     'Content-Type' => 'application/vnd.api+json',
                 ],
                 'input' => $this->_getJsonApiRequestBody('Relationships' . DS . $requestBodyFile),
-            ]
+            ],
         );
 
         // execute the POST request
@@ -134,9 +134,9 @@ class RelationshipsIntegrationTest extends JsonApiBaseTestCase
                             'type' => 'currencies',
                             'id' => 1,
                         ],
-                    ]
+                    ],
                 ),
-            ]
+            ],
         );
 
         // execute the POST request
@@ -183,9 +183,9 @@ class RelationshipsIntegrationTest extends JsonApiBaseTestCase
                                 'id' => 10,
                             ],
                         ],
-                    ]
+                    ],
                 ),
-            ]
+            ],
         );
 
         // execute the POST request
@@ -243,7 +243,7 @@ class RelationshipsIntegrationTest extends JsonApiBaseTestCase
                     'Content-Type' => 'application/vnd.api+json',
                 ],
                 'input' => $this->_getJsonApiRequestBody('Relationships' . DS . $requestBodyFile),
-            ]
+            ],
         );
 
         $this->disableErrorHandlerMiddleware();
@@ -297,7 +297,7 @@ class RelationshipsIntegrationTest extends JsonApiBaseTestCase
                     'Content-Type' => 'application/vnd.api+json',
                 ],
                 'input' => $this->_getJsonApiRequestBody('Relationships' . DS . $requestBodyFile),
-            ]
+            ],
         );
 
         // execute the DELETE request

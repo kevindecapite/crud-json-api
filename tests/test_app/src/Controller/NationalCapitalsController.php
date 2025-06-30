@@ -33,7 +33,7 @@ class NationalCapitalsController extends Controller
                     'CrudJsonApi.JsonApi',
                     'CrudJsonApi.Pagination',
                 ],
-            ]
+            ],
         );
     }
 }

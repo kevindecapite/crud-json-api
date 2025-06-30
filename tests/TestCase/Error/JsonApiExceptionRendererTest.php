@@ -186,7 +186,6 @@ class JsonApiExceptionRendererTest extends TestCase
             ->expects($this->exactly(2))
             ->method('withStatus')
             ->willReturnCallback(function () use (&$callCount, $response): MockObject {
-                $res = new Response();
                 $callCount++;
 
                 // First call should throw an exception.

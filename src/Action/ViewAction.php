@@ -46,14 +46,14 @@ class ViewAction extends BaseViewAction
     {
         $repository = $this->_controller()->fetchTable();
 
-        [$finder, $options] = $this->_extractFinder();
+        [$finder] = $this->_extractFinder();
         $query = $repository->find($finder);
 
         $subject->set(
             [
                 'repository' => $repository,
                 'query' => $query,
-            ]
+            ],
         );
 
         $this->_trigger('beforeFind', $subject);

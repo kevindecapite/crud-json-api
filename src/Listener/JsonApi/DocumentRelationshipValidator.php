@@ -67,7 +67,7 @@ class DocumentRelationshipValidator extends DocumentValidator
             $detail = "Related records are missing member 'type' or 'id'",
             $status = null,
             $idx = null,
-            $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/' . $about)
+            $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/' . $about),
         );
 
         return false;

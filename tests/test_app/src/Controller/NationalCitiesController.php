@@ -34,7 +34,7 @@ class NationalCitiesController extends Controller
                     'CrudJsonApi.JsonApi',
                     'CrudJsonApi.Pagination',
                 ],
-            ]
+            ],
         );
     }
 

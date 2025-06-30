@@ -190,7 +190,7 @@ class RelationshipsAction extends BaseAction
             ->where(
                 [
                     $table->aliasField($primaryKey) => $foreignKeyParam,
-                ]
+                ],
             )
             ->contain([
                 $relationName => [
@@ -204,7 +204,7 @@ class RelationshipsAction extends BaseAction
                 'association' => $association,
                 'repository' => $table,
                 'query' => $primaryQuery,
-            ]
+            ],
         );
         $this->_trigger('beforeFind', $subject);
         $entity = $subject->query->first();
@@ -241,7 +241,7 @@ class RelationshipsAction extends BaseAction
      *
      * @return void
      */
-    protected function _delete()
+    protected function _delete(): void
     {
         $subject = $this->_subject();
         $request = $this->_request();
@@ -274,7 +274,7 @@ class RelationshipsAction extends BaseAction
         $idsToDelete = (array)Hash::extract($data, '{n}.id');
         $foreignRecords = $entity->$property;
         $entity->$property = [];
-        foreach ($foreignRecords as $key => $foreignRecord) {
+        foreach ($foreignRecords as $foreignRecord) {
             if (!in_array($foreignRecord->id, $idsToDelete, false)) {
                 $entity->{$property}[] = $foreignRecord;
             }
@@ -300,7 +300,7 @@ class RelationshipsAction extends BaseAction
      *
      * @return void
      */
-    protected function _post()
+    protected function _post(): void
     {
         $subject = $this->_subject();
         $request = $this->_request();
@@ -349,7 +349,7 @@ class RelationshipsAction extends BaseAction
      *
      * @return void
      */
-    protected function _patch()
+    protected function _patch(): void
     {
         $subject = $this->_subject();
         $request = $this->_request();
@@ -444,7 +444,7 @@ class RelationshipsAction extends BaseAction
             ->where(
                 [
                     $association->aliasField($associationPrimaryKey) . ' in' => $idsToAdd,
-                ]
+                ],
             )
             ->all();
 
@@ -452,13 +452,13 @@ class RelationshipsAction extends BaseAction
             $foundIds = $foreignRecords->extract(
                 static function ($record) {
                     return $record->id;
-                }
+                },
             )
                 ->toArray();
             $missingIds = array_diff($idsToAdd, $foundIds);
 
             throw new RecordNotFoundException(
-                __('Not all requested records could be found. Missing IDs are {0}', implode(', ', $missingIds))
+                __('Not all requested records could be found. Missing IDs are {0}', implode(', ', $missingIds)),
             );
         }
 

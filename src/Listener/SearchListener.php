@@ -40,7 +40,7 @@ class SearchListener extends BaseListener
     /**
      * Inject search conditions into the query object.
      *
-     * @param  \Cake\Event\EventInterface $event Event
+     * @param \Cake\Event\EventInterface $event Event
      * @return void
      */
     public function injectSearch(EventInterface $event): void
@@ -54,8 +54,8 @@ class SearchListener extends BaseListener
             throw new RuntimeException(
                 sprintf(
                     'Missing Search.Search behavior on %s',
-                    get_class($repository)
-                )
+                    get_class($repository),
+                ),
             );
         }
 

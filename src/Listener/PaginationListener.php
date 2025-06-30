@@ -39,7 +39,7 @@ class PaginationListener extends BaseListener
     /**
      * Appends the pagination information to the JSON or XML output
      *
-     * @param  \Cake\Event\EventInterface $event Event
+     * @param \Cake\Event\EventInterface $event Event
      * @return void
      */
     public function beforeRender(EventInterface $event): void
@@ -69,7 +69,7 @@ class PaginationListener extends BaseListener
     /**
      * Generates pagination viewVars with JSON API compatible hyperlinks.
      *
-     * @param  array $pagination CakePHP pagination result
+     * @param array $pagination CakePHP pagination result
      * @return array
      */
     protected function _getJsonApiPaginationResponse(array $pagination): array
@@ -81,7 +81,7 @@ class PaginationListener extends BaseListener
             'page' => null,
             'limit' => null,
             ],
-            $pagination
+            $pagination,
         );
 
         $request = $this->_request();
@@ -105,21 +105,21 @@ class PaginationListener extends BaseListener
             $baseUrl + [
             '?' => ['page' => $pagination['currentPage']] + $query,
             ],
-            $fullBase
+            $fullBase,
         );
 
         $first = Router::url(
             $baseUrl + [
             '?' => ['page' => 1] + $query,
             ],
-            $fullBase
+            $fullBase,
         );
 
         $last = Router::url(
             $baseUrl + [
             '?' => ['page' => $pagination['pageCount']] + $query,
             ],
-            $fullBase
+            $fullBase,
         );
 
         $prev = null;
@@ -128,7 +128,7 @@ class PaginationListener extends BaseListener
                 $baseUrl + [
                 '?' => ['page' => $pagination['currentPage'] - 1] + $query,
                 ],
-                $fullBase
+                $fullBase,
             );
         }
 
@@ -138,7 +138,7 @@ class PaginationListener extends BaseListener
                 $baseUrl + [
                 '?' => ['page' => $pagination['currentPage'] + 1] + $query,
                 ],
-                $fullBase
+                $fullBase,
             );
         }
 

@@ -17,6 +17,7 @@ use Neomerx\JsonApi\Contracts\Encoder\EncoderInterface;
 use Neomerx\JsonApi\Contracts\Schema\LinkInterface;
 use Neomerx\JsonApi\Encoder\Encoder;
 use Neomerx\JsonApi\Schema\Link;
+use RuntimeException;
 use function Cake\Core\pluginSplit;
 
 class JsonApiView extends View
@@ -35,7 +36,7 @@ class JsonApiView extends View
         ?ServerRequest $request = null,
         ?Response $response = null,
         ?EventManager $eventManager = null,
-        array $viewOptions = []
+        array $viewOptions = [],
     ) {
         parent::__construct($request, $response, $eventManager, $viewOptions);
 
@@ -74,11 +75,11 @@ class JsonApiView extends View
      * - with empty body
      * - with body containing only the meta node
      *
-     * @param  string|null $template   Name of view file to use
-     * @param  string|false|null $layout Layout to use.
+     * @param string|null $template   Name of view file to use
+     * @param string|false|null $layout Layout to use.
      * @return string
      */
-    public function render(?string $template = null, $layout = null): string
+    public function render(?string $template = null, string|false|null $layout = null): string
     {
         if ($this->getConfig('association')) {
             $json = $this->_encodeWithIdentifiers();
@@ -131,8 +132,8 @@ class JsonApiView extends View
 
                         return new Link(false, $link, false);
                     },
-                    $links
-                )
+                    $links,
+                ),
             );
         }
 
@@ -142,7 +143,7 @@ class JsonApiView extends View
     /**
      * Generates a JSON API string without resource(s).
      *
-     * @return null|string
+     * @return string|null
      */
     protected function _encodeWithoutSchemas(): ?string
     {
@@ -261,7 +262,7 @@ class JsonApiView extends View
      * 2. custom dynamic schema
      * 3. Crud's dynamic schema
      *
-     * @param  \Cake\ORM\Table[] $repositories List holding repositories used to map entities to schema classes
+     * @param array<\Cake\ORM\Table> $repositories List holding repositories used to map entities to schema classes
      * @throws \Crud\Error\Exception\CrudException
      * @return array A list with Entity class names as key holding NeoMerx Closure object
      */
@@ -279,7 +280,7 @@ class JsonApiView extends View
                 throw new CrudException(sprintf(
                     'Entity classes must not be the generic "%s" class for repository "%s"',
                     $entityClass,
-                    $repositoryName
+                    $repositoryName,
                 ));
             }
 
@@ -314,7 +315,7 @@ class JsonApiView extends View
 
             //Otherwise something is horribly wrong
             if (!$schemaClass) {
-                throw new \RuntimeException('No valid schema classes found');
+                throw new RuntimeException('No valid schema classes found');
             }
 
             // Uses NeoMerx createSchemaFromClosure()` to generate Closure
@@ -333,10 +334,10 @@ class JsonApiView extends View
     /**
      * Returns an array with NeoMerx Link objects to be used for pagination.
      *
-     * @param  array $pagination ApiPaginationListener pagination response
+     * @param array $pagination ApiPaginationListener pagination response
      * @return array
      */
-    protected function _getPaginationLinks($pagination): array
+    protected function _getPaginationLinks(array $pagination): array
     {
         $links = [];
 
@@ -366,23 +367,23 @@ class JsonApiView extends View
     /**
      * Returns data to be serialized.
      *
-     * @param  array|string|bool|object $serialize The name(s) of the view variable(s) that
+     * @param object|array|string|bool $serialize The name(s) of the view variable(s) that
      *                                             need(s) to be serialized. If true all available view variables will be used.
      * @return mixed The data to serialize.
      */
-    protected function _getDataToSerializeFromViewVars($serialize = true)
+    protected function _getDataToSerializeFromViewVars(array|string|bool|object $serialize = true): mixed
     {
         if (is_object($serialize)) {
             throw new CrudException(
                 'Assigning an object to JsonApiListener "serialize" is deprecated, ' .
-                'assign the object to its own variable and assign "serialize" = true instead.'
+                'assign the object to its own variable and assign "serialize" = true instead.',
             );
         }
 
         if ($serialize === true) {
             $viewVars = array_diff(
                 $this->getVars(),
-                $this->_getSpecialVars()
+                $this->_getSpecialVars(),
             );
 
             if (empty($viewVars)) {
@@ -405,7 +406,7 @@ class JsonApiView extends View
      *
      * @return int Flag holding json options
      */
-    protected function _jsonOptions()
+    protected function _jsonOptions(): int
     {
         $jsonOptions = 0;
 
@@ -435,7 +436,7 @@ class JsonApiView extends View
      *
      * @return void
      */
-    protected function _inflectIncludesViewVar()
+    protected function _inflectIncludesViewVar(): void
     {
         $inflect = $this->getConfig('inflect');
         $include = $this->getConfig('include');

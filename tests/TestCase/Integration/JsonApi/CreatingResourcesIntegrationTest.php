@@ -27,8 +27,8 @@ class CreatingResourcesIntegrationTest extends JsonApiBaseTestCase
         $this->post(
             '/countries',
             $this->_getJsonApiRequestBody(
-                'CreatingResources' . DS . 'create-country-throw-side-posting-exception.json'
-            )
+                'CreatingResources' . DS . 'create-country-throw-side-posting-exception.json',
+            ),
         );
         $this->assertResponseCode(400); // bad request
         $responseBodyArray = json_decode((string)$this->_response->getBody(), true);

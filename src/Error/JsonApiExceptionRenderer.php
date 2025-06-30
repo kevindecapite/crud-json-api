@@ -13,6 +13,7 @@ use Cake\Utility\Inflector;
 use Crud\Error\Exception\ValidationException;
 use Crud\Error\ExceptionRenderer;
 use Crud\Listener\ApiQueryLogListener;
+use Exception;
 use Laminas\Diactoros\Stream;
 use Neomerx\JsonApi\Encoder\Encoder;
 use Neomerx\JsonApi\Schema\Error;
@@ -59,8 +60,8 @@ class JsonApiExceptionRenderer extends ExceptionRenderer
                 $status,
                 $code = null,
                 $title,
-                $detail
-            )
+                $detail,
+            ),
         );
 
         $encoder = Encoder::instance();
@@ -87,7 +88,7 @@ class JsonApiExceptionRenderer extends ExceptionRenderer
      * Method used for rendering 422 validation used for both CakePHP entity
      * validation errors and JSON API (request data) documents.
      *
-     * @param  \Crud\Error\Exception\ValidationException $error Exception
+     * @param \Crud\Error\Exception\ValidationException $error Exception
      * @return \Cake\Http\Response
      */
     public function validation(ValidationException $error): Response
@@ -100,7 +101,7 @@ class JsonApiExceptionRenderer extends ExceptionRenderer
 
         try {
             $this->controller->setResponse($this->controller->getResponse()->withStatus($status));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $status = 422;
             $this->controller->setResponse($this->controller->getResponse()->withStatus($status));
         }
@@ -133,7 +134,7 @@ class JsonApiExceptionRenderer extends ExceptionRenderer
      * - returning cloaked collection as passed down from the Listener
      * - creating a new collection from CakePHP validation errors
      *
-     * @param  array $validationErrors CakePHP validation errors
+     * @param array $validationErrors CakePHP validation errors
      * @return \Neomerx\JsonApi\Schema\ErrorCollection
      */
     protected function _getNeoMerxErrorCollection(array $validationErrors): ErrorCollection
@@ -159,7 +160,7 @@ class JsonApiExceptionRenderer extends ExceptionRenderer
                 $idx = null,
                 $aboutLink = null,
                 $code = null,
-                $meta = null
+                $meta = null,
             );
         }
 
@@ -169,7 +170,7 @@ class JsonApiExceptionRenderer extends ExceptionRenderer
     /**
      * Adds top-level `debug` node to a json encoded string
      *
-     * @param  string $json Json encoded string
+     * @param string $json Json encoded string
      * @return string Json encoded string with added debug node
      */
     protected function _addDebugNode(string $json): string
@@ -187,7 +188,7 @@ class JsonApiExceptionRenderer extends ExceptionRenderer
             [
             'format' => 'array',
             'args' => false,
-            ]
+            ],
         );
 
         $result = json_decode($json, true);
@@ -208,7 +209,7 @@ class JsonApiExceptionRenderer extends ExceptionRenderer
     /**
      * Add top-level `query` node if ApiQueryLogListener is loaded.
      *
-     * @param  string $json Json encoded string
+     * @param string $json Json encoded string
      * @return string Json encoded string
      */
     protected function _addQueryLogsNode(string $json): string
@@ -244,7 +245,7 @@ class JsonApiExceptionRenderer extends ExceptionRenderer
      * Note: we need this function because Cake's built-in rules don't pass
      * through `_processRules()` function in the Validator.
      *
-     * @param  array $errors CakePHP validation errors
+     * @param array $errors CakePHP validation errors
      * @return array Standardized array
      */
     protected function _standardizeValidationErrors(array $errors = []): array

@@ -100,7 +100,7 @@ class FetchingResourcesIntegrationTest extends JsonApiBaseTestCase
                 'headers' => [
                     'Accept' => 'application/vnd.api+json',
                 ],
-            ]
+            ],
         );
 
         # execute the GET request

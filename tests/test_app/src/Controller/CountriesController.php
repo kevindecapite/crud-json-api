@@ -36,7 +36,7 @@ class CountriesController extends Controller
                                      'CrudJsonApi.Pagination',
                                      'Crud.Search',
                                  ],
-            ]
+            ],
         );
     }
 }

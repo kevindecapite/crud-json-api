@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace CrudJsonApi\Test\TestCase\Integration\JsonApi;
 
-use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 use CrudJsonApi\Test\TestCase\Integration\JsonApiBaseTestCase;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
