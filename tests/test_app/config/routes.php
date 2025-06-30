@@ -17,5 +17,8 @@ Router::createRouteBuilder('/')->scope('/', function (RouteBuilder $routes) {
         'Countries',
         'Currencies',
         'Cultures',
+        'Languages',
+        'NationalCapitals',
+        'NationalCities',
     ], $routes);
 });
