@@ -10,6 +10,7 @@ use Cake\ORM\TableRegistry;
 use Cake\Routing\RouteBuilder;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
+use function Cake\Core\pluginSplit;
 
 /**
  * Class RouteBuilder

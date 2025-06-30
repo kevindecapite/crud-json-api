@@ -17,6 +17,7 @@ use Neomerx\JsonApi\Contracts\Encoder\EncoderInterface;
 use Neomerx\JsonApi\Contracts\Schema\LinkInterface;
 use Neomerx\JsonApi\Encoder\Encoder;
 use Neomerx\JsonApi\Schema\Link;
+use function Cake\Core\pluginSplit;
 
 class JsonApiView extends View
 {

@@ -27,6 +27,7 @@ use CrudJsonApi\InflectTrait;
 use CrudJsonApi\Listener\JsonApi\DocumentRelationshipValidator;
 use CrudJsonApi\Listener\JsonApi\DocumentValidator;
 use InvalidArgumentException;
+use function Cake\Core\pluginSplit;
 
 /**
  * Extends Crud ApiListener to respond in JSON API format.

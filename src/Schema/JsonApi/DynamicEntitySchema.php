@@ -20,6 +20,7 @@ use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 use Neomerx\JsonApi\Contracts\Schema\LinkInterface;
 use Neomerx\JsonApi\Schema\BaseSchema;
 use Neomerx\JsonApi\Schema\Identifier;
+use function Cake\Core\pluginSplit;
 
 /**
  * Licensed under The MIT License
