@@ -19,7 +19,6 @@ class CurrenciesController extends Controller
     {
         parent::initialize();
 
-        $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent(
             'Crud.Crud',
