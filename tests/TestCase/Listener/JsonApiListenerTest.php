@@ -7,7 +7,6 @@ use Cake\Controller\Controller;
 use Cake\Core\Plugin;
 use Cake\Datasource\ResultSetDecorator;
 use Cake\Event\Event;
-use Cake\Filesystem\File;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Exception\MethodNotAllowedException;
 use Cake\Http\Response;
@@ -21,6 +20,7 @@ use Crud\Event\Subject;
 use Crud\TestSuite\TestCase;
 use CrudJsonApi\Listener\JsonApiListener;
 use CrudJsonApi\Test\App\Model\Entity\Country;
+use function file_get_contents;
 
 /**
  * Licensed under The MIT License
@@ -301,7 +301,7 @@ class JsonApiListenerTest extends TestCase
             ->onlyMethods([])
             ->getMock();
 
-        $controller->response = $response;
+        $controller->setResponse($response);
 
         $listener
             ->method('_response')
@@ -840,7 +840,7 @@ class JsonApiListenerTest extends TestCase
         $subject->entity = $entity;
         $this->setReflectionClassInstance($listener);
         $result = $this->callProtectedMethod('_getSingleEntity', [$subject], $listener);
-        $this->assertSame($subject->entity, $result);
+        $this->assertSame($subject->get('entity'), $result);
     }
 
     public function testGetSingleEntityForEmptyResultSet()
@@ -1161,8 +1161,11 @@ class JsonApiListenerTest extends TestCase
         $this->assertSame($expected, $result);
 
         // assert success (single entity, no relationships)
-        $jsonApiFixture = new File($this->_JsonApiDecoderFixtures . DS . 'incoming-country-no-relationships.json');
-        $jsonApiArray = json_decode($jsonApiFixture->read(), true);
+        $jsonApiFixture = file_get_contents(
+            $this->_JsonApiDecoderFixtures . DS . 'incoming-country-no-relationships.json'
+        );
+
+        $jsonApiArray = json_decode($jsonApiFixture, true);
         $expected = [
             'code' => 'NL',
             'name' => 'The Netherlands',
@@ -1172,8 +1175,11 @@ class JsonApiListenerTest extends TestCase
         $this->assertSame($expected, $result);
 
         // assert success (single entity, multiple relationships, hasMany ignored for now)
-        $jsonApiFixture = new File($this->_JsonApiDecoderFixtures . DS . 'incoming-country-mixed-relationships.json');
-        $jsonApiArray = json_decode($jsonApiFixture->read(), true);
+        $jsonApiFixture = file_get_contents(
+            $this->_JsonApiDecoderFixtures . DS . 'incoming-country-mixed-relationships.json'
+        );
+
+        $jsonApiArray = json_decode($jsonApiFixture, true);
         $expected = [
             'code' => 'NL',
             'name' => 'The Netherlands',
@@ -1191,8 +1197,11 @@ class JsonApiListenerTest extends TestCase
         $this->assertSame($expected, $result);
 
         // assert success for relationships with null/empty data
-        $jsonApiFixture = new File($this->_JsonApiDecoderFixtures . DS . 'incoming-country-mixed-relationships.json');
-        $jsonApiArray = json_decode($jsonApiFixture->read(), true);
+        $jsonApiFixture = file_get_contents(
+            $this->_JsonApiDecoderFixtures . DS . 'incoming-country-mixed-relationships.json'
+        );
+
+        $jsonApiArray = json_decode($jsonApiFixture, true);
         $jsonApiArray['data']['relationships']['cultures']['data'] = null;
         $jsonApiArray['data']['relationships']['currency']['data'] = null;
 

@@ -453,7 +453,7 @@ class JsonApiViewTest extends TestCase
         $view = $this
             ->getMockBuilder(JsonApiView::class)
             ->disableOriginalConstructor()
-            ->setMethods(null)
+            ->onlyMethods([])
             ->getMock();
 
         $this->setReflectionClassInstance($view);
@@ -536,7 +536,7 @@ class JsonApiViewTest extends TestCase
         $view = $this
             ->getMockBuilder(JsonApiView::class)
             ->disableOriginalConstructor()
-            ->setMethods(null)
+            ->onlyMethods([])
             ->getMock();
 
         $this->setReflectionClassInstance($view);
@@ -663,7 +663,7 @@ class JsonApiViewTest extends TestCase
         $view = $this
             ->getMockBuilder(JsonApiView::class)
             ->disableOriginalConstructor()
-            ->setMethods(null)
+            ->onlyMethods([])
             ->getMock();
 
         $this->setReflectionClassInstance($view);
