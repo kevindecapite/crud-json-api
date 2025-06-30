@@ -1,7 +1,7 @@
 <?php
 
-use Cake\Core\Configure;
 use Cake\Core\Plugin;
+use Cake\Datasource\ConnectionManager;
 use Cake\TestSuite\Fixture\SchemaLoader;
 
 // @codingStandardsIgnoreFile
@@ -53,18 +53,20 @@ Cake\Core\Configure::write(
 );
 Cake\Core\Configure::write('debug', true);
 
-$TMP = new \Cake\Filesystem\Folder(TMP);
-$TMP->create(TMP . 'cache/models', 0777);
-$TMP->create(TMP . 'cache/persistent', 0777);
-$TMP->create(TMP . 'cache/views', 0777);
+$tmps = ['models', 'persistent', 'views'];
+foreach ($tmps as $tmp) {
+    if (!is_dir(sprintf('%scache/%s', TMP, $tmp))) {
+        mkdir(sprintf('%scache/%s', TMP, $tmp), 0777, true);
+    }
+}
 
 $cache = [
     'default' => [
         'engine' => 'File'
     ],
-    '_cake_core_' => [
+    '_cake_translations_' => [
         'className' => 'File',
-        'prefix' => 'crud_myapp_cake_core_',
+        'prefix' => 'crud_myapp_cake_translations_',
         'path' => CACHE . 'persistent/',
         'serialize' => true,
         'duration' => '+10 seconds'
@@ -91,17 +93,18 @@ if (!getenv('DB_URL')) {
     putenv('DB_URL=sqlite:///:memory:');
 }
 
-Cake\Datasource\ConnectionManager::setConfig(
-    'test',
-    [
-        'url' => getenv('DB_URL'),
-        'timezone' => 'UTC'
-    ]
-);
+// Configure both 'default' and 'test' datasources.
+$dbConfig = [
+    'url' => getenv('DB_URL'),
+    'timezone' => 'UTC'
+];
 
-// Load schema from schema.php file
+ConnectionManager::setConfig('default', $dbConfig);
+ConnectionManager::setConfig('test', $dbConfig);
+ConnectionManager::alias('test', 'default');
+
 $loader = new SchemaLoader();
 $loader->loadInternalFile(ROOT . '/tests/Fixture/schema.php');
 
-Plugin::getCollection()->add(new \Crud\Plugin());
+Plugin::getCollection()->add(new \Crud\CrudPlugin());
 Plugin::getCollection()->add(new \CrudJsonApi\Plugin());
