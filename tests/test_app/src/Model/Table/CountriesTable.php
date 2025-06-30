@@ -32,7 +32,9 @@ class CountriesTable extends Table
             'propertyName' => 'supercountry',
         ]);
 
-        $this->belongsToMany('Languages');
+        $this
+            ->belongsToMany('Languages')
+            ->setThrough('CountriesLanguages');
     }
 
     public function validationDefault(Validator $validator): Validator

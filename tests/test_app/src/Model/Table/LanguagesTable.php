@@ -12,6 +12,8 @@ class LanguagesTable extends Table
 {
     public function initialize(array $config): void
     {
-        $this->belongsToMany('Countries');
+        $this
+            ->belongsToMany('Countries')
+            ->setThrough('CountriesLanguages');
     }
 }
