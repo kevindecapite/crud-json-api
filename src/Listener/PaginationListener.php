@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace CrudJsonApi\Listener;
 
+use Cake\Datasource\Paging\PaginatedInterface;
 use Cake\Event\EventInterface;
 use Cake\Routing\Router;
 use Crud\Listener\ApiPaginationListener as BaseListener;
@@ -43,18 +44,26 @@ class PaginationListener extends BaseListener
      */
     public function beforeRender(EventInterface $event): void
     {
-        $paging = $this->_request()->getAttribute('paging');
+        $viewVar = 'data';
+        $action = $this->_action();
 
-        if (empty($paging)) {
+        if (method_exists($action, 'viewVar')) {
+            $viewVar = $action->viewVar();
+        }
+
+        $paginatedResultset = $this
+            ->_controller()
+            ->viewBuilder()
+            ->getVar($viewVar);
+
+        if (!$paginatedResultset instanceof PaginatedInterface) {
             return;
         }
 
-        $pagination = current($paging);
-        if (empty($pagination)) {
-            return;
-        }
-
-        $this->_controller->viewBuilder()->setOption('pagination', $this->_getJsonApiPaginationResponse($pagination));
+        $this
+            ->_controller()
+            ->viewBuilder()
+            ->setOption('pagination', $this->_getJsonApiPaginationResponse($paginatedResultset->pagingParams()));
     }
 
     /**
@@ -94,7 +103,7 @@ class PaginationListener extends BaseListener
 
         $self = Router::url(
             $baseUrl + [
-            '?' => ['page' => $pagination['page']] + $query,
+            '?' => ['page' => $pagination['currentPage']] + $query,
             ],
             $fullBase
         );
@@ -114,20 +123,20 @@ class PaginationListener extends BaseListener
         );
 
         $prev = null;
-        if ($pagination['prevPage']) {
+        if ($pagination['hasPrevPage']) {
             $prev = Router::url(
                 $baseUrl + [
-                '?' => ['page' => $pagination['page'] - 1] + $query,
+                '?' => ['page' => $pagination['currentPage'] - 1] + $query,
                 ],
                 $fullBase
             );
         }
 
         $next = null;
-        if ($pagination['nextPage']) {
+        if ($pagination['hasNextPage']) {
             $next = Router::url(
                 $baseUrl + [
-                '?' => ['page' => $pagination['page'] + 1] + $query,
+                '?' => ['page' => $pagination['currentPage'] + 1] + $query,
                 ],
                 $fullBase
             );
@@ -139,7 +148,7 @@ class PaginationListener extends BaseListener
             'last' => $last,
             'prev' => $prev,
             'next' => $next,
-            'record_count' => $pagination['count'],
+            'record_count' => $pagination['totalCount'],
             'page_count' => $pagination['pageCount'],
             'page_limit' => $pagination['limit'],
         ];
