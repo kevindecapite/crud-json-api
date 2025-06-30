@@ -91,7 +91,7 @@ class DynamicEntitySchema extends BaseSchema
      * @return string
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public function getId(Entity $resource): ?string
+    public function getId($resource): ?string
     {
         $primaryKey = $this->repository->getPrimaryKey();
 
@@ -163,7 +163,7 @@ class DynamicEntitySchema extends BaseSchema
      * @return array
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public function getAttributes(EntityInterface $resource, ContextInterface $context): iterable
+    public function getAttributes($resource, ContextInterface $context): iterable
     {
         $resource->setHidden((array)$this->getRepository()->getPrimaryKey(), true);
 
@@ -207,7 +207,7 @@ class DynamicEntitySchema extends BaseSchema
      * @return array
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public function getRelationships(EntityInterface $resource, ContextInterface $context): iterable
+    public function getRelationships($resource, ContextInterface $context): iterable
     {
         $relations = [];
 
@@ -284,7 +284,7 @@ class DynamicEntitySchema extends BaseSchema
      * @return string
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public function getSelfSubUrl(?Entity $resource = null): string
+    public function getSelfSubUrl($resource = null): string
     {
         if ($resource === null) {
             return '';
@@ -328,7 +328,7 @@ class DynamicEntitySchema extends BaseSchema
      * @return \Neomerx\JsonApi\Contracts\Schema\LinkInterface
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public function getRelationshipSelfLink(EntityInterface $resource, string $name): LinkInterface
+    public function getRelationshipSelfLink($resource, string $name): LinkInterface
     {
         $association = $this->getAssociationByProperty($name);
         if (!$association) {
@@ -368,7 +368,7 @@ class DynamicEntitySchema extends BaseSchema
      * @return \Neomerx\JsonApi\Contracts\Schema\LinkInterface
      * @psalm-suppress MoreSpecificImplementedParamType
      */
-    public function getRelationshipRelatedLink(EntityInterface $resource, string $name): LinkInterface
+    public function getRelationshipRelatedLink($resource, string $name): LinkInterface
     {
         $association = $this->getAssociationByProperty($name);
         if (!$association) {
