@@ -1077,15 +1077,11 @@ class JsonApiListenerTest extends TestCase
             ->willReturnCallback(function () use (&$callCount): string {
                 $callCount++;
 
-                switch ($callCount) {
-                    case 1:
-                        return 'GET';
-                    case 2:
-                    case 3:
-                        return 'POST';
-                }
-
-                return 'PATCH';
+                return match ($callCount) {
+                    1 => 'GET',
+                    2, 3 => 'POST',
+                    default => 'PATCH',
+                };
             });
 
         $controller->setRequest($request);
