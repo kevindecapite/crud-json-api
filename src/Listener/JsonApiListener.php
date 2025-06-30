@@ -15,7 +15,7 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\ORM\Association;
 use Cake\ORM\Locator\LocatorAwareTrait;
-use Cake\ORM\Query;
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\ResultSet;
 use Cake\ORM\Table;
 use Cake\Utility\Hash;
@@ -710,7 +710,7 @@ class JsonApiListener extends ApiListener
 
         $associationKeys = $repository->associations()->keys();
         $subject->query
-            ->matching($reverseAssociation->getName(), static function (Query $query) use (
+            ->matching($reverseAssociation->getName(), static function (SelectQuery $query) use (
                 $reverseAssociation,
                 $foreignKeyValue,
             ) {
@@ -1068,7 +1068,7 @@ class JsonApiListener extends ApiListener
      */
     protected function _getSingleEntity(Subject $subject): ?EntityInterface
     {
-        if (!empty($subject->entities) && $subject->entities instanceof Query) {
+        if (!empty($subject->entities) && $subject->entities instanceof SelectQuery) {
             /** @psalm-suppress InvalidReturnStatement */
             return (clone $subject->entities)->first();
         }
