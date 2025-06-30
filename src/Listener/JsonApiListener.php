@@ -265,8 +265,8 @@ class JsonApiListener extends ApiListener
         }
 
         /**
- * @var Subject $subject
-*/
+         * @var \Crud\Event\Subject $subject
+         */
         $subject = $event->getSubject();
         $this->render($subject);
 
@@ -435,7 +435,7 @@ class JsonApiListener extends ApiListener
      * Supported options is "allowList" and "Blacklist"
      *
      * @param array|string $includes The query data
-     * @param Subject $subject  The subject
+     * @param \Crud\Event\Subject $subject  The subject
      * @param array               $options  Array of options for includes.
      * @return void
      */
@@ -478,7 +478,7 @@ class JsonApiListener extends ApiListener
      * Parses out fields query parameter and apply it to the query
      *
      * @param array|string|null $fieldSets The query data
-     * @param Subject $subject   The subject
+     * @param \Crud\Event\Subject $subject   The subject
      * @param array               $options   Array of options for includes.
      * @return void
      */
@@ -570,7 +570,7 @@ class JsonApiListener extends ApiListener
             ],
         );
 
-        /** @var Subject $subject */
+        /** @var \Crud\Event\Subject $subject */
         $subject = $event->getSubject();
 
         foreach ($queryParameters as $parameter => $options) {
@@ -654,7 +654,7 @@ class JsonApiListener extends ApiListener
     }
 
     /**
-     * @param Subject $subject Event subject
+     * @param \Crud\Event\Subject $subject Event subject
      * @return void
      */
     protected function _fetchRelated(Subject $subject): void
@@ -738,7 +738,7 @@ class JsonApiListener extends ApiListener
      *
      * @see http://jsonapi.org/format/#fetching-sorting
      * @param array|string $sortFields Field sort request
-     * @param Subject $subject    The subject
+     * @param \Crud\Event\Subject $subject    The subject
      * @param array               $options    Array of options for includes.
      * @return void
      */
@@ -806,7 +806,7 @@ class JsonApiListener extends ApiListener
     /**
      * Set required viewVars before rendering the JsonApiView.
      *
-     * @param Subject $subject Subject
+     * @param \Crud\Event\Subject $subject Subject
      * @return \Cake\Http\Response
      */
     public function render(Subject $subject): Response
@@ -851,7 +851,7 @@ class JsonApiListener extends ApiListener
      *
      * Primarly used for relationship end-points as described in https://jsonapi.org/format/1.1/#fetching-relationships
      *
-     * @param Subject $subject Subject
+     * @param \Crud\Event\Subject $subject Subject
      * @return \Cake\Http\Response
      */
     protected function _renderWithIdentifiers(Subject $subject): Response
@@ -882,7 +882,7 @@ class JsonApiListener extends ApiListener
     /**
      * Renders a JSON API response with top-level data node holding resource(s).
      *
-     * @param Subject $subject Subject
+     * @param \Crud\Event\Subject $subject Subject
      * @return \Cake\Http\Response
      */
     protected function _renderWithResources(Subject $subject): Response
@@ -1013,7 +1013,7 @@ class JsonApiListener extends ApiListener
     /**
      * Deduplicate resultset from rows that might have come from joins
      *
-     * @param Subject $subject Subject
+     * @param \Crud\Event\Subject $subject Subject
      * @return \Cake\Datasource\ResultSetInterface
      */
     protected function _deduplicateResultSet(Subject $subject): ResultSetInterface
@@ -1043,8 +1043,8 @@ class JsonApiListener extends ApiListener
      * Helper function to easily retrieve `find()` result from Crud subject
      * regardless of current action.
      *
-     * @param Subject $subject Subject
-     * @return EntityInterface|ResultSetInterface|array<EntityInterface>|string Single Entity or ORM\ResultSet
+     * @param \Crud\Event\Subject $subject Subject
+     * @return \Cake\Datasource\EntityInterface|\Cake\Datasource\ResultSetInterface|array<\Cake\Datasource\EntityInterface>|string Single Entity or ORM\ResultSet
      */
     protected function _getFindResult(Subject $subject): EntityInterface|ResultSetInterface|array|string
     {
@@ -1063,8 +1063,8 @@ class JsonApiListener extends ApiListener
      * Helper function to easily retrieve a single entity from Crud subject
      * find result regardless of current action.
      *
-     * @param Subject $subject Subject
-     * @return EntityInterface|null
+     * @param \Crud\Event\Subject $subject Subject
+     * @return \Cake\Datasource\EntityInterface|null
      */
     protected function _getSingleEntity(Subject $subject): ?EntityInterface
     {
@@ -1138,7 +1138,7 @@ class JsonApiListener extends ApiListener
      * prevent `null` entries appearing in the json api `relationships` node.
      *
      * @param \Cake\Datasource\RepositoryInterface                  $repository Repository
-     * @param EntityInterface $entity     Entity
+     * @param \Cake\Datasource\EntityInterface $entity     Entity
      * @return array
      */
     protected function _extractEntityAssociations(RepositoryInterface $repository, EntityInterface $entity): array
