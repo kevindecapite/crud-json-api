@@ -64,6 +64,15 @@ $cache = [
     'default' => [
         'engine' => 'File'
     ],
+    # This config key wasn't deprecated until CakePHP 5.1.
+    # @link https://book.cakephp.org/5/en/core-libraries/caching.html#configuring-cache-engines
+    '_cake_core_' => [
+        'className' => 'File',
+        'prefix' => 'crud_myapp_cake_core_',
+        'path' => CACHE . 'persistent/',
+        'serialize' => true,
+        'duration' => '+10 seconds'
+    ],
     '_cake_translations_' => [
         'className' => 'File',
         'prefix' => 'crud_myapp_cake_translations_',
