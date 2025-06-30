@@ -44,7 +44,7 @@ class ViewAction extends BaseViewAction
      */
     protected function _findRecordViaRelated(Subject $subject): EntityInterface
     {
-        $repository = $this->_table();
+        $repository = $this->_controller()->fetchTable();
 
         [$finder, $options] = $this->_extractFinder();
         $query = $repository->find($finder);

@@ -7,9 +7,9 @@ use Cake\Controller\Controller;
 use Cake\Core\Configure;
 use Cake\Core\Exception\CakeException;
 use Cake\Core\Plugin;
+use Cake\Datasource\ModelAwareTrait;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
-use Cake\ORM\TableRegistry;
 use Crud\Error\Exception\ValidationException;
 use Crud\TestSuite\TestCase;
 use CrudJsonApi\Error\JsonApiExceptionRenderer;
@@ -17,6 +17,8 @@ use Neomerx\JsonApi\Schema\ErrorCollection;
 
 class JsonApiExceptionRendererTest extends TestCase
 {
+    use ModelAwareTrait;
+
     /**
      * Path to directory holding the JSON API response fixtures
      *
@@ -103,7 +105,7 @@ class JsonApiExceptionRendererTest extends TestCase
      */
     public function testRenderWithValidationError()
     {
-        $countries = TableRegistry::get('Countries');
+        $countries = $this->fetchModel('Countries');
 
         $invalidCountry = $countries->newEntity([
             'code' => 'not-all-uppercase',
@@ -153,7 +155,7 @@ class JsonApiExceptionRendererTest extends TestCase
      */
     public function testValidationExceptionsFallBackToStatusCode422()
     {
-        $countries = TableRegistry::get('Countries');
+        $countries = $this->fetchModel('Countries');
 
         $invalidCountry = $countries->newEntity([]);
 

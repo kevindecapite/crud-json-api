@@ -49,7 +49,7 @@ class SearchListener extends BaseListener
             return;
         }
 
-        $repository = $this->_table();
+        $repository = $this->_controller()->fetchTable();
         if ($repository instanceof Table && !$repository->behaviors()->has('Search')) {
             throw new RuntimeException(
                 sprintf(

@@ -179,7 +179,7 @@ class UpdatingResourcesIntegrationTest extends JsonApiBaseTestCase
         $recordId = $matches[2];
 
         # assert the database record got updated like expected
-        $table = TableRegistry::get($tableName);
+        $table = $this->fetchTable($tableName);
         $record = $table->get($recordId)->toArray();
 
         $this->assertArraySubset($expectedRecordSubset, $record);

@@ -150,7 +150,7 @@ class RelationshipsAction extends BaseAction
     protected function _findRelations(Subject $subject): EntityInterface
     {
         $relationName = $this->_request()->getParam('type');
-        $table = $this->_table();
+        $table = $this->_controller()->fetchTable();
         $association = $table->getAssociation($relationName);
         $targetTable = $association->getTarget();
 
@@ -284,7 +284,7 @@ class RelationshipsAction extends BaseAction
             $association->setSaveStrategy('replace');
         }
         $saveMethod = $this->saveMethod();
-        if ($this->_table()->$saveMethod($entity, $this->saveOptions())) {
+        if ($this->_controller()->fetchTable()->$saveMethod($entity, $this->saveOptions())) {
             $this->_success($subject);
 
             return;
@@ -333,7 +333,7 @@ class RelationshipsAction extends BaseAction
         $this->_trigger('beforeSave', $subject);
 
         $saveMethod = $this->saveMethod();
-        if ($this->_table()->$saveMethod($entity, $this->saveOptions())) {
+        if ($this->_controller()->fetchTable()->$saveMethod($entity, $this->saveOptions())) {
             $this->_success($subject);
 
             return;
@@ -382,7 +382,7 @@ class RelationshipsAction extends BaseAction
             $association->setSaveStrategy('replace');
         }
         $saveMethod = $this->saveMethod();
-        if ($this->_table()->$saveMethod($entity, $this->saveOptions())) {
+        if ($this->_controller()->fetchTable()->$saveMethod($entity, $this->saveOptions())) {
             $this->_success($subject);
 
             return;

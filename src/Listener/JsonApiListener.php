@@ -794,7 +794,7 @@ class JsonApiListener extends ApiListener
                 $order[$repository->aliasField($sortField)] = $direction;
             }
         }
-        $subject->query->order($order);
+        $subject->query->orderBy($order);
     }
 
     /**
@@ -881,7 +881,7 @@ class JsonApiListener extends ApiListener
      */
     protected function _renderWithResources(Subject $subject): Response
     {
-        $repository = $this->_controller()->fetchModel(); // Default model class
+        $repository = $this->_controller()->fetchTable(); // Default model class
 
         $usedAssociations = [];
         if (isset($subject->query)) {
@@ -1306,7 +1306,7 @@ class JsonApiListener extends ApiListener
      */
     protected function _getAssociationsList(?Table $table, array $associationTypes = []): array
     {
-        $table = $table ?: $this->_table();
+        $table = $table ?: $this->_controller()->fetchTable();
         if (!$table instanceof Table) {
             return [];
         }

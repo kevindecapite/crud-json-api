@@ -15,7 +15,6 @@ use Cake\Http\ServerRequest;
 use Cake\ORM\Entity;
 use Cake\ORM\Query;
 use Cake\ORM\ResultSet;
-use Cake\ORM\TableRegistry;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 use Crud\Event\Subject;
@@ -262,7 +261,7 @@ class JsonApiListenerTest extends TestCase
         $this->assertFalse($this->callProtectedMethod('afterSave', [$event], $listener));
 
         // assert success
-        $table = TableRegistry::get('Countries');
+        $table = $this->fetchTable('Countries');
         $entity = $table->find()->first();
         $subject->entity = $entity;
 
@@ -888,7 +887,7 @@ class JsonApiListenerTest extends TestCase
         $subject->query = $query;
         $subject->query
             ->method('getRepository')
-            ->willReturn(TableRegistry::get('Countries'));
+            ->willReturn($this->fetchTable('Countries'));
 
         $this->setReflectionClassInstance($listener);
         $result = $this->callProtectedMethod('_getSingleEntity', [$subject], $listener);
@@ -905,9 +904,7 @@ class JsonApiListenerTest extends TestCase
      */
     public function testGetContainedAssociations()
     {
-        $table = TableRegistry::get('Countries');
-        $table->belongsTo('Currencies');
-        $table->hasMany('Cultures');
+        $table = $this->fetchTable('Countries');
 
         // make sure expected associations are there
         $associationsBefore = $table->associations();
@@ -940,21 +937,7 @@ class JsonApiListenerTest extends TestCase
      */
     public function testGetRepositoryList()
     {
-        $table = TableRegistry::get('Countries');
-        $table->belongsTo('Currencies');
-        $table->belongsTo('NationalCapitals');
-        $table->hasMany('Cultures');
-        $table->hasMany('NationalCities');
-
-        $table->hasMany('SubCountries', [
-            'className' => 'Countries',
-            'propertyName' => 'subcountry',
-        ]);
-
-        $table->belongsTo('SuperCountries', [
-            'className' => 'Countries',
-            'propertyName' => 'supercountry',
-        ]);
+        $table = $this->fetchTable('Countries');
 
         $associations = [];
         foreach ($table->associations() as $association) {
@@ -1011,7 +994,7 @@ class JsonApiListenerTest extends TestCase
         // hasMany relations (if listener config option `include` is not set)
         $this->assertEmpty($listener->getConfig('include'));
 
-        $table = TableRegistry::get('Countries');
+        $table = $this->fetchTable('Countries');
         $associations = [];
         foreach ($table->associations() as $association) {
             $associations[strtolower($association->getName())] = [
@@ -1347,7 +1330,7 @@ class JsonApiListenerTest extends TestCase
         $subject->query = $query;
         $subject->query
             ->method('getRepository')
-            ->willReturn(TableRegistry::get('Countries'));
+            ->willReturn($this->fetchTable('Countries'));
 
         $this->callProtectedMethod('_includeParameter', [$include, $subject, $options], $listener);
         $this->assertSame($expectedInclude, $listener->getConfig('include'));
@@ -1397,8 +1380,8 @@ class JsonApiListenerTest extends TestCase
             ->method('contain')
             ->with($expectedContain);
         $subject->query
-            ->method('repository')
-            ->willReturn(TableRegistry::get('Countries'));
+            ->method('getRepository')
+            ->willReturn($this->fetchTable('Countries'));
 
         $this->callProtectedMethod('_includeParameter', [$include, $subject, $options], $listener);
         $this->assertSame($expectedInclude, $listener->getConfig('include'));
@@ -1429,7 +1412,7 @@ class JsonApiListenerTest extends TestCase
             ->method('contain');
         $subject->query
             ->method('getRepository')
-            ->willReturn(TableRegistry::get('Countries'));
+            ->willReturn($this->fetchTable('Countries'));
 
         $sort = 'code,currency.code';
         $listener->setConfig('include', ['currency', 'national_capitals']);
