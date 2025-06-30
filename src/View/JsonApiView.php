@@ -5,6 +5,7 @@ namespace CrudJsonApi\View;
 
 use Cake\Core\App;
 use Cake\Core\Configure;
+use Cake\Core\InstanceConfigTrait;
 use Cake\Event\EventManager;
 use Cake\Http\Response;
 use Cake\Http\ServerRequest;
@@ -23,6 +24,9 @@ use function Cake\Core\pluginSplit;
 class JsonApiView extends View
 {
     use InflectTrait;
+
+    # For BC, re-use trait since Cake 5.0.0 declares `getConfig()` protected in its `View::class`.
+    use InstanceConfigTrait;
 
     /**
      * Constructor

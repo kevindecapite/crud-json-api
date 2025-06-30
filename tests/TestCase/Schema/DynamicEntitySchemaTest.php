@@ -9,6 +9,7 @@ use Cake\View\View;
 use Crud\TestSuite\TestCase;
 use CrudJsonApi\Listener\JsonApiListener;
 use CrudJsonApi\Schema\JsonApi\DynamicEntitySchema;
+use CrudJsonApi\View\JsonApiView;
 use Neomerx\JsonApi\Contracts\Factories\FactoryInterface;
 use Neomerx\JsonApi\Contracts\Schema\ContextInterface;
 use Neomerx\JsonApi\Contracts\Schema\SchemaInterface;
@@ -83,7 +84,7 @@ class DynamicEntitySchemaTest extends TestCase
 
         // make view return associations on get('_associations') call
         $view = $this
-            ->getMockBuilder(View::class)
+            ->getMockBuilder(JsonApiView::class)
             ->onlyMethods(['get'])
             ->disableOriginalConstructor()
             ->getMock();
@@ -162,7 +163,7 @@ class DynamicEntitySchemaTest extends TestCase
         $repositories = $this->callProtectedMethod('_getRepositoryList', [$table, $associations], $listener);
 
         // make view return associations on get('_associations') call
-        $view = new View();
+        $view = new JsonApiView();
 
         $view->setConfig('repositories', $repositories);
         $view->setConfig('absoluteLinks', false); // test relative links (listener default)
