@@ -20,7 +20,7 @@ class UpdatingResourcesIntegrationTest extends JsonApiBaseTestCase
      *
      * @return array
      */
-    public function updateResourceProvider()
+    public static function updateResourceProvider(): array
     {
         return [
             # changing USD to RUB

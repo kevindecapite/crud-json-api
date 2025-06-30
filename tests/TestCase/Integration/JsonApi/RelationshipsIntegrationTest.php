@@ -13,7 +13,7 @@ class RelationshipsIntegrationTest extends JsonApiBaseTestCase
     /**
      * @return array
      */
-    public function getProvider()
+    public static function getProvider(): array
     {
         return [
 //            'one-to-many: get cultures for country' => [
@@ -54,7 +54,7 @@ class RelationshipsIntegrationTest extends JsonApiBaseTestCase
     /**
      * @return array
      */
-    public function postProvider()
+    public static function postProvider(): array
     {
         return [
             'one-to-many: add culture relationship for country' => [
@@ -107,7 +107,7 @@ class RelationshipsIntegrationTest extends JsonApiBaseTestCase
     /**
      * @return \string[][]
      */
-    public function toOne()
+    public static function toOne(): array
     {
         return [
             'POST' => ['post'],
@@ -151,7 +151,7 @@ class RelationshipsIntegrationTest extends JsonApiBaseTestCase
     /**
      * @return \string[][]
      */
-    public function missingRecordProvider()
+    public static function missingRecordProvider(): array
     {
         return [
             'POST' => ['post'],
@@ -201,7 +201,7 @@ class RelationshipsIntegrationTest extends JsonApiBaseTestCase
     /**
      * @return array
      */
-    public function patchProvider()
+    public static function patchProvider(): array
     {
         return [
             'one-to-many: replace culture relationship for country' => [
@@ -260,7 +260,7 @@ class RelationshipsIntegrationTest extends JsonApiBaseTestCase
     /**
      * @return array
      */
-    public function deleteProvider()
+    public static function deleteProvider(): array
     {
         return [
             'one-to-many: delete culture relationship for country' => [

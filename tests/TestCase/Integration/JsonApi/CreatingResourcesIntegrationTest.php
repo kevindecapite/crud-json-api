@@ -52,7 +52,7 @@ class CreatingResourcesIntegrationTest extends JsonApiBaseTestCase
      *
      * @return array
      */
-    public function createResourceProvider()
+    public static function createResourceProvider(): array
     {
         return [
             'create-single-word-resource-no-relationships' => [

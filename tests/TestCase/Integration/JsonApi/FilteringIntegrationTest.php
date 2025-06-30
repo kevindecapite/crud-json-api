@@ -10,7 +10,7 @@ class FilteringIntegrationTest extends JsonApiBaseTestCase
     /**
      * @return array
      */
-    public function filterProvider()
+    public static function filterProvider(): array
     {
         return [
             // assert single-field searches (case sensitive for now or

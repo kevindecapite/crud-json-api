@@ -12,7 +12,7 @@ class FetchingCollectionsIntegrationTest extends JsonApiBaseTestCase
      *
      * @return array
      */
-    public function getProvider()
+    public static function getProvider(): array
     {
         return [
             # Test fetching a single-word collection.

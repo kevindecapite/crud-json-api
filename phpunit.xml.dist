@@ -5,20 +5,20 @@
     processIsolation="false"
     stopOnFailure="false"
     bootstrap="./tests/bootstrap.php"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+    cacheDirectory=".phpunit.cache"
 >
-  <coverage>
-    <include>
-      <directory suffix=".php">./src/</directory>
-      <directory suffix=".ctp">./src/</directory>
-    </include>
-  </coverage>
   <extensions>
-    <extension class="\Cake\TestSuite\Fixture\PHPUnitExtension" />
+    <bootstrap class="Cake\TestSuite\Fixture\Extension\PHPUnitExtension"/>
   </extensions>
   <testsuites>
     <testsuite name="Crud">
       <directory>./tests/</directory>
     </testsuite>
   </testsuites>
+  <source>
+    <include>
+      <directory suffix=".php">./src/</directory>
+    </include>
+  </source>
 </phpunit>

@@ -11,7 +11,7 @@ class SparseFieldsetsIntegrationTest extends JsonApiBaseTestCase
     /**
      * @return array
      */
-    public function viewProvider()
+    public static function viewProvider(): array
     {
         return [
              // assert "single-field" sparse for index actions
@@ -101,7 +101,7 @@ class SparseFieldsetsIntegrationTest extends JsonApiBaseTestCase
     /**
      * @return array
      */
-    public function paginationUrlProvider()
+    public static function paginationUrlProvider(): array
     {
         return [
             'pagination' => [

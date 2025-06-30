@@ -1214,7 +1214,7 @@ class JsonApiListenerTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    public function includeQueryProvider()
+    public static function includeQueryProvider(): array
     {
         return [
             'standard' => [
@@ -1345,7 +1345,7 @@ class JsonApiListenerTest extends TestCase
         $this->assertSame($expectedInclude, $listener->getConfig('include'));
     }
 
-    public function includeQueryBadRequestProvider()
+    public static function includeQueryBadRequestProvider(): array
     {
         return [
             'denyList everything' => [
