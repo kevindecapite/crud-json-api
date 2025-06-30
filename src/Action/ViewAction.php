@@ -17,7 +17,7 @@ class ViewAction extends BaseViewAction
      * @return void
      * @throws \Exception
      */
-    protected function _handle(?string $id = null): void
+    protected function _handle(string|int|null $id = null): void
     {
         $request = $this->_request();
         $from = $request->getParam('from');
@@ -47,7 +47,7 @@ class ViewAction extends BaseViewAction
         $repository = $this->_table();
 
         [$finder, $options] = $this->_extractFinder();
-        $query = $repository->find($finder, $options);
+        $query = $repository->find($finder);
 
         $subject->set(
             [

@@ -15,7 +15,7 @@ class SearchListener extends BaseListener
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'enabled' => [
             'Crud.beforeLookup',
             'Crud.beforePaginate',

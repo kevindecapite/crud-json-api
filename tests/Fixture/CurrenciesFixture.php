@@ -5,7 +5,7 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 class CurrenciesFixture extends TestFixture
 {
-    public $records = [
+    public array $records = [
         ['code' => 'EUR', 'name' => 'Euro'],
         ['code' => 'USD', 'name' => 'US Dollar'],
     ];

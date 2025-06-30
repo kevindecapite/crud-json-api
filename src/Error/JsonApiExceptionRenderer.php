@@ -8,6 +8,7 @@ use Cake\Core\Configure;
 use Cake\Core\Exception\CakeException;
 use Cake\Error\Debugger;
 use Cake\Http\Response;
+use Cake\Http\ServerRequest;
 use Cake\Utility\Inflector;
 use Crud\Error\Exception\ValidationException;
 use Crud\Error\ExceptionRenderer;
@@ -28,10 +29,11 @@ class JsonApiExceptionRenderer extends ExceptionRenderer
     /**
      * Method used for all non-validation errors.
      *
-     * @param  string $template Name of template to use (ignored for jsonapi)
+     * @param string $template
+     * @param bool $skipControllerCheck
      * @return \Cake\Http\Response
      */
-    protected function _outputMessage(string $template): Response
+    protected function _outputMessage(string $template, bool $skipControllerCheck = false): Response
     {
         if (!$this->controller->getRequest()->accepts('application/vnd.api+json')) {
             return parent::_outputMessage($template);
@@ -231,7 +233,7 @@ class JsonApiExceptionRenderer extends ExceptionRenderer
      */
     protected function _getApiQueryLogListenerObject(): ApiQueryLogListener
     {
-        return new ApiQueryLogListener(new Controller());
+        return new ApiQueryLogListener(new Controller(new ServerRequest()));
     }
 
     /**

@@ -5,7 +5,7 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 class NationalCitiesFixture extends TestFixture
 {
-    public $records = [
+    public array $records = [
         ['name' => 'Amsterdam', 'country_id' => 1],
         ['name' => 'Rotterdam', 'country_id' => 1],
         ['name' => 'Sofia', 'country_id' => 2],

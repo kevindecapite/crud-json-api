@@ -47,7 +47,7 @@ class RelationshipsAction extends BaseAction
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'enabled' => true,
         'scope' => 'entity',
         'findMethod' => 'all',

@@ -13,7 +13,7 @@ class CountriesController extends Controller
 {
     use ControllerTrait;
 
-    public $paginate = ['limit' => 3];
+    public array $paginate = ['limit' => 3];
 
     public function initialize(): void
     {

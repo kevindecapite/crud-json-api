@@ -41,7 +41,7 @@ class JsonApiListenerTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'plugin.CrudJsonApi.Countries',
         'plugin.CrudJsonApi.Cultures',
         'plugin.CrudJsonApi.Currencies',
@@ -71,7 +71,7 @@ class JsonApiListenerTest extends TestCase
      */
     public function testDefaultConfig()
     {
-        $listener = new JsonApiListener(new Controller());
+        $listener = new JsonApiListener(new Controller(new ServerRequest()));
 
         $expected = [
             'detectors' => [
@@ -212,6 +212,7 @@ class JsonApiListenerTest extends TestCase
         $controller = $this
             ->getMockBuilder(Controller::class)
             ->onlyMethods([])
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
         $response = $this
@@ -362,7 +363,7 @@ class JsonApiListenerTest extends TestCase
             ->getMockBuilder(Controller::class)
             ->onlyMethods([])
             ->enableOriginalConstructor()
-            ->setConstructorArgs([null, null, 'Countries'])
+            ->setConstructorArgs([new ServerRequest(), 'Countries'])
             ->getMock();
 
         $listener = $this
@@ -395,6 +396,7 @@ class JsonApiListenerTest extends TestCase
             ->getMockBuilder(Controller::class)
             ->onlyMethods([])
             ->enableOriginalConstructor()
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
         $listener = $this
@@ -695,8 +697,7 @@ class JsonApiListenerTest extends TestCase
     {
         $request = new ServerRequest();
         $request = $request->withEnv('HTTP_ACCEPT', 'application/vnd.api+json');
-        $response = new Response();
-        $controller = new Controller($request, $response);
+        $controller = new Controller($request);
         $listener = new JsonApiListener($controller);
         $listener->setupDetectors();
 
@@ -706,8 +707,7 @@ class JsonApiListenerTest extends TestCase
         $request = new ServerRequest();
         $request = $request->withEnv('HTTP_ACCEPT', 'application/vnd.api+json')
             ->withEnv('CONTENT_TYPE', 'application/vnd.api+json');
-        $response = new Response();
-        $controller = new Controller($request, $response);
+        $controller = new Controller($request);
         $listener = new JsonApiListener($controller);
         $listener->setupDetectors();
 
@@ -726,8 +726,7 @@ class JsonApiListenerTest extends TestCase
         $request = new ServerRequest();
         $request = $request->withEnv('HTTP_ACCEPT', 'application/vnd.api+json')
             ->withEnv('CONTENT_TYPE', 'application/json');
-        $response = new Response();
-        $controller = new Controller($request, $response);
+        $controller = new Controller($request);
         $listener = new JsonApiListener($controller);
         $listener->setupDetectors();
 
@@ -746,8 +745,7 @@ class JsonApiListenerTest extends TestCase
         $request = new ServerRequest();
         $request = $request->withEnv('HTTP_ACCEPT', 'application/vnd.api+json')
             ->withEnv('REQUEST_METHOD', 'PUT');
-        $response = new Response();
-        $controller = new Controller($request, $response);
+        $controller = new Controller($request);
         $listener = new JsonApiListener($controller);
         $listener->setupDetectors();
 
@@ -793,6 +791,7 @@ class JsonApiListenerTest extends TestCase
             ->getMockBuilder(Controller::class)
             ->onlyMethods([])
             ->enableOriginalConstructor()
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
         $listener = $this
@@ -851,6 +850,7 @@ class JsonApiListenerTest extends TestCase
             ->getMockBuilder(Controller::class)
             ->onlyMethods([])
             ->enableOriginalConstructor()
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
         $listener = $this
@@ -924,7 +924,7 @@ class JsonApiListenerTest extends TestCase
         $this->assertNull($entity->cultures);
 
         // make sure cultures are removed from AssociationCollection
-        $listener = new JsonApiListener(new Controller());
+        $listener = new JsonApiListener(new Controller(new ServerRequest()));
         $this->setReflectionClassInstance($listener);
         $associationsAfter = $this->callProtectedMethod('_getContainedAssociations', [$table, $query->getContain()], $listener);
 
@@ -973,7 +973,7 @@ class JsonApiListenerTest extends TestCase
         $this->assertArrayHasKey('currencies', $associations);
         $this->assertArrayHasKey('cultures', $associations);
 
-        $listener = new JsonApiListener(new Controller());
+        $listener = new JsonApiListener(new Controller(new ServerRequest()));
         $this->setReflectionClassInstance($listener);
         $result = $this->callProtectedMethod('_getRepositoryList', [$table, $associations], $listener);
 
@@ -1161,7 +1161,7 @@ class JsonApiListenerTest extends TestCase
      */
     public function testConvertJsonApiDataArray()
     {
-        $listener = new JsonApiListener(new Controller());
+        $listener = new JsonApiListener(new Controller(new ServerRequest()));
         $this->setReflectionClassInstance($listener);
 
         // assert posted id attribute gets processed as expected
@@ -1334,7 +1334,7 @@ class JsonApiListenerTest extends TestCase
      */
     public function testIncludeQuery($include, $options, $expectedContain, $expectedInclude)
     {
-        $listener = new JsonApiListener(new Controller());
+        $listener = new JsonApiListener(new Controller(new ServerRequest()));
         $this->setReflectionClassInstance($listener);
 
         $subject = new Subject();
@@ -1381,7 +1381,7 @@ class JsonApiListenerTest extends TestCase
     public function testIncludeQueryBadRequest($include, $options, $expectedContain, $expectedInclude)
     {
         $this->expectException('Cake\Http\Exception\BadRequestException');
-        $listener = new JsonApiListener(new Controller());
+        $listener = new JsonApiListener(new Controller(new ServerRequest()));
         $this->setReflectionClassInstance($listener);
 
         $subject = new Subject();
@@ -1413,7 +1413,7 @@ class JsonApiListenerTest extends TestCase
      */
     public function testSortingNotAppliedToAllTables()
     {
-        $listener = new JsonApiListener(new Controller());
+        $listener = new JsonApiListener(new Controller(new ServerRequest()));
         $this->setReflectionClassInstance($listener);
 
         $subject = new Subject();

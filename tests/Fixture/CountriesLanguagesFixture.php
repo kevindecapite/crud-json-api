@@ -5,7 +5,7 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 class CountriesLanguagesFixture extends TestFixture
 {
-    public $records = [
+    public array $records = [
         ['country_id' => 1, 'language_id' => 1],
         ['country_id' => 1, 'language_id' => 2],
         ['country_id' => 2, 'language_id' => 4],

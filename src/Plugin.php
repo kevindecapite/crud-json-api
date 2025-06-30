@@ -13,7 +13,7 @@ class Plugin extends BasePlugin
     /**
      * Plugin name
      *
-     * @var string
+     * @var ?string
      */
-    protected $name = 'CrudJsonApi';
+    protected ?string $name = 'CrudJsonApi';
 }

@@ -22,14 +22,14 @@ class JsonApiExceptionRendererTest extends TestCase
      *
      * @var
      */
-    protected $_JsonApiResponseBodyFixtures;
+    protected string $_JsonApiResponseBodyFixtures;
 
     /**
      * fixtures property
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'plugin.CrudJsonApi.Countries',
     ];
 
@@ -56,6 +56,7 @@ class JsonApiExceptionRendererTest extends TestCase
 
         $controller = $this->getMockBuilder(Controller::class)
             ->onlyMethods(['render'])
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
         $controller->setRequest(new ServerRequest([
             'environment' => [
@@ -112,6 +113,7 @@ class JsonApiExceptionRendererTest extends TestCase
 
         $controller = $this->getMockBuilder('Cake\Controller\Controller')
             ->setMethods(['render'])
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
         $controller->request = new ServerRequest([
             'environment' => [
@@ -159,6 +161,7 @@ class JsonApiExceptionRendererTest extends TestCase
 
         $controller = $this->getMockBuilder('Cake\Controller\Controller')
             ->setMethods(['render'])
+            ->setConstructorArgs([new ServerRequest()])
             ->getMock();
 
         $controller->request = new ServerRequest([

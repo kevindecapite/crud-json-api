@@ -37,7 +37,7 @@ abstract class JsonApiBaseTestCase extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'plugin.CrudJsonApi.Countries',
         'plugin.CrudJsonApi.Currencies',
         'plugin.CrudJsonApi.Cultures',

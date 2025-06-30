@@ -34,7 +34,7 @@ class JsonApiViewTest extends TestCase
      *
      * @var array
      */
-    public $fixtures = [
+    public array $fixtures = [
         'plugin.CrudJsonApi.Countries',
         'plugin.CrudJsonApi.Currencies',
         'plugin.CrudJsonApi.Cultures',
@@ -63,7 +63,7 @@ class JsonApiViewTest extends TestCase
 
         require CONFIG . 'routes.php';
 
-        $listener = new JsonApiListener(new Controller());
+        $listener = new JsonApiListener(new Controller(new ServerRequest()));
 
         $this->_defaultOptions = [
             'urlPrefix' => $listener->getConfig('urlPrefix'),
@@ -131,7 +131,7 @@ class JsonApiViewTest extends TestCase
         // create required (but non user configurable) viewVars next
         $request = new ServerRequest();
         $response = new Response();
-        $controller = new Controller($request, $response, $tableName);
+        $controller = new Controller($request);
 
         $builder = $controller->viewBuilder();
         $builder
