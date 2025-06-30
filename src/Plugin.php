@@ -15,5 +15,5 @@ class Plugin extends BasePlugin
      *
      * @var ?string
      */
-    protected ?string $name = 'CrudJsonApi';
+    protected ?string $name = 'CrudJsonApiPlugin';
 }
