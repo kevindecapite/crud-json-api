@@ -1084,7 +1084,7 @@ class JsonApiListener extends ApiListener
             return $subject->entities->first();
         }
 
-        return $subject->get('query') ? $subject->get('query')->first() : $subject->get('entity');
+        return $subject->entity ?? null;
     }
 
     /**

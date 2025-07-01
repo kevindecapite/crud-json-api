@@ -840,7 +840,7 @@ class JsonApiListenerTest extends TestCase
         $subject->entity = $entity;
         $this->setReflectionClassInstance($listener);
         $result = $this->callProtectedMethod('_getSingleEntity', [$subject], $listener);
-        $this->assertSame($subject->get('entity'), $result);
+        $this->assertSame($subject->entity, $result);
     }
 
     public function testGetSingleEntityForEmptyResultSet()
