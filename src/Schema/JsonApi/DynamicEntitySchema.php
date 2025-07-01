@@ -88,7 +88,6 @@ class DynamicEntitySchema extends BaseSchema
      *
      * @param \Cake\ORM\Entity $resource Entity
      * @return string
-     * @psalm-suppress MoreSpecificImplementedParamType
      * @phpcs:disable SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     public function getId($resource): ?string
@@ -129,10 +128,7 @@ class DynamicEntitySchema extends BaseSchema
     protected function entityToShallowArray(EntityInterface $entity): array
     {
         $result = [];
-        /** @psalm-suppress UndefinedInterfaceMethod */
-        $properties = method_exists($entity, 'getVisible')
-            ? $entity->getVisible()
-            : $entity->visibleProperties();
+        $properties = $entity->getVisible();
         foreach ($properties as $property) {
             if ($property[0] === '_') {
                 continue;
@@ -161,7 +157,6 @@ class DynamicEntitySchema extends BaseSchema
      * @param \Cake\Datasource\EntityInterface $resource Entity
      * @param \Neomerx\JsonApi\Contracts\Schema\ContextInterface $context The Context
      * @return array
-     * @psalm-suppress MoreSpecificImplementedParamType
      * @phpcs:disable SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     public function getAttributes($resource, ContextInterface $context): iterable
@@ -206,7 +201,6 @@ class DynamicEntitySchema extends BaseSchema
      * @param \Cake\Datasource\EntityInterface $resource Entity object
      * @param \Neomerx\JsonApi\Contracts\Schema\ContextInterface $context The Context
      * @return array
-     * @psalm-suppress MoreSpecificImplementedParamType
      * @phpcs:disable SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     public function getRelationships($resource, ContextInterface $context): iterable
@@ -284,7 +278,6 @@ class DynamicEntitySchema extends BaseSchema
      *
      * @param \Cake\ORM\Entity|null $resource Entity, null only to be compatible with the Neomerx method
      * @return string
-     * @psalm-suppress MoreSpecificImplementedParamType
      * @phpcs:disable SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     public function getSelfSubUrl($resource = null): string
@@ -329,7 +322,6 @@ class DynamicEntitySchema extends BaseSchema
      * @param \Cake\Datasource\EntityInterface $resource Entity
      * @param string                           $name   Relationship name in lowercase singular or plural
      * @return \Neomerx\JsonApi\Contracts\Schema\LinkInterface
-     * @psalm-suppress MoreSpecificImplementedParamType
      * @phpcs:disable SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     public function getRelationshipSelfLink($resource, string $name): LinkInterface
@@ -370,7 +362,6 @@ class DynamicEntitySchema extends BaseSchema
      * @param \Cake\Datasource\EntityInterface $resource Entity
      * @param string                           $name   Relationship name in lowercase singular or plural
      * @return \Neomerx\JsonApi\Contracts\Schema\LinkInterface
-     * @psalm-suppress MoreSpecificImplementedParamType
      * @phpcs:disable SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     public function getRelationshipRelatedLink($resource, string $name): LinkInterface

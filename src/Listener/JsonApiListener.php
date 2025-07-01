@@ -1019,14 +1019,7 @@ class JsonApiListener extends ApiListener
             }
         }
 
-        if ($subject->entities instanceof ResultSet) {
-            $resultSet = clone $subject->entities;
-            $resultSet->unserialize(serialize($entities));
-        } else {
-            $resultSet = new ResultSetDecorator($entities);
-        }
-
-        return $resultSet;
+        return new ResultSet($entities);
     }
 
     /**
@@ -1059,7 +1052,6 @@ class JsonApiListener extends ApiListener
     protected function _getSingleEntity(Subject $subject): ?EntityInterface
     {
         if (!empty($subject->entities) && $subject->entities instanceof SelectQuery) {
-            /** @psalm-suppress InvalidReturnStatement */
             return (clone $subject->entities)->first();
         }
 
@@ -1267,7 +1259,6 @@ class JsonApiListener extends ApiListener
                 $validator->validateCreateDocument();
             }
 
-            /** @psalm-suppress TypeDoesNotContainType */
             if ($requestMethod === 'PATCH' || $requestMethod === 'DELETE') {
                 $validator->validateUpdateDocument();
             }
@@ -1303,9 +1294,6 @@ class JsonApiListener extends ApiListener
     protected function _getAssociationsList(?Table $table, array $associationTypes = []): array
     {
         $table = $table ?: $this->_controller()->fetchTable();
-        if (!$table instanceof Table) {
-            return [];
-        }
 
         $associations = $table->associations();
 

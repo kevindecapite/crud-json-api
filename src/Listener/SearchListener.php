@@ -50,7 +50,7 @@ class SearchListener extends BaseListener
         }
 
         $repository = $this->_controller()->fetchTable();
-        if ($repository instanceof Table && !$repository->behaviors()->has('Search')) {
+        if (!$repository->behaviors()->has('Search')) {
             throw new RuntimeException(
                 sprintf(
                     'Missing Search.Search behavior on %s',

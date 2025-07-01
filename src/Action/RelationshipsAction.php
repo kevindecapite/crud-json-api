@@ -365,7 +365,6 @@ class RelationshipsAction extends BaseAction
 
         if (in_array($association->type(), [Association::MANY_TO_ONE, Association::ONE_TO_ONE], true)) {
             //Set the relationship to the corresponding entity
-            /** @psalm-suppress TypeDoesNotContainNull */
             if (array_key_exists('id', $data)) {
                 $entity->{$property} = $foreignTable->get($data['id']);
             } elseif ($data === null) {
