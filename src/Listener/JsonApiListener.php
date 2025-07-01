@@ -6,7 +6,6 @@ namespace CrudJsonApi\Listener;
 use Cake\Collection\CollectionInterface;
 use Cake\Datasource\EntityInterface;
 use Cake\Datasource\RepositoryInterface;
-use Cake\Datasource\ResultSetDecorator;
 use Cake\Datasource\ResultSetInterface;
 use Cake\Event\EventInterface;
 use Cake\Http\Exception\BadRequestException;

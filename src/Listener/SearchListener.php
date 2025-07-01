@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace CrudJsonApi\Listener;
 
 use Cake\Event\EventInterface;
-use Cake\ORM\Table;
 use Crud\Listener\BaseListener;
 use RuntimeException;
 

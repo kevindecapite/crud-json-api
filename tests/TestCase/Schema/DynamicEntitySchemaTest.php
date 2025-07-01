@@ -5,7 +5,6 @@ namespace CrudJsonApi\Test\TestCase\Schema\JsonApi;
 
 use Cake\Controller\Controller;
 use Cake\Http\ServerRequest;
-use Cake\View\View;
 use Crud\TestSuite\TestCase;
 use CrudJsonApi\Listener\JsonApiListener;
 use CrudJsonApi\Schema\JsonApi\DynamicEntitySchema;
