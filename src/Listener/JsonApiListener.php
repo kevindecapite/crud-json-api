@@ -138,26 +138,18 @@ class JsonApiListener extends ApiListener
      * `?include=` query parameter was passed because that would override/break previously generated data.
      *
      * @param \Cake\Event\EventInterface $event Event
-     * @return null
+     * @return void
      */
-    public function afterFind(EventInterface $event)
+    public function afterFind(EventInterface $event): void
     {
         if (!$this->_request()->is('get')) {
-            return null;
+            return;
         }
 
         // set property so we can check inside `_renderWithResources()`
         if (!empty($event->getSubject()->query->getContain())) {
             $this->_ControllerHasSetContain = true;
-
-            return null;
         }
-
-        if ($this->getConfig('include')) {
-            return null;
-        }
-
-        return null;
     }
 
     /**
@@ -203,16 +195,12 @@ class JsonApiListener extends ApiListener
             // hasMany found in the entity, extract ids from the request data
             $primaryResourceId = $this->_controller()->getRequest()->getData('id');
 
-            /**
- * @var array $hasManyIds
-*/
+            /** @var array $hasManyIds */
             $hasManyIds = Hash::extract($this->_controller()->getRequest()->getData($key), '{n}.id');
             $hasManyTable = $this->getTableLocator()->get($associationName);
 
             // query database only for hasMany that match both passed id and the id of the primary resource
-            /**
- * @var string $entityForeignKey
-*/
+            /** @var string $entityForeignKey */
             $entityForeignKey = $hasManyTable->getAssociation($entity->getSource())->getForeignKey();
             $primaryKey = current((array)$hasManyTable->getPrimaryKey());
             $query = $hasManyTable->find()
@@ -245,17 +233,21 @@ class JsonApiListener extends ApiListener
      * afterSave() event.
      *
      * @param \Cake\Event\EventInterface $event Event
-     * @return bool|null
+     * @return void
      */
-    public function afterSave(EventInterface $event): ?bool
+    public function afterSave(EventInterface $event): void
     {
         if (!$event->getSubject()->success) {
-            return false;
+            $event->setResult(false);
+
+            return;
         }
 
         // `created` will be set for add actions, `id` for edit actions
         if (!$event->getSubject()->created && !$event->getSubject()->id) {
-            return false;
+            $event->setResult(false);
+
+            return;
         }
 
         // The `add`action (new Resource) MUST respond with HTTP Status Code 201,
@@ -269,8 +261,6 @@ class JsonApiListener extends ApiListener
          */
         $subject = $event->getSubject();
         $this->render($subject);
-
-        return null;
     }
 
     /**
@@ -281,17 +271,17 @@ class JsonApiListener extends ApiListener
      * been implemented here yet. http://jsonapi.org/format/#crud-deleting
      *
      * @param \Cake\Event\EventInterface $event Event
-     * @return bool|null
+     * @return void
      */
-    public function afterDelete(EventInterface $event): ?bool
+    public function afterDelete(EventInterface $event): void
     {
         if (!$event->getSubject()->success) {
-            return false;
+            $event->setResult(false);
+
+            return;
         }
 
         $this->_controller()->setResponse($this->_controller()->getResponse()->withStatus(204));
-
-        return null;
     }
 
     /**

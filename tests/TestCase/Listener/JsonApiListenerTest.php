@@ -252,13 +252,15 @@ class JsonApiListenerTest extends TestCase
 
         // assert nothing happens if `success` is false
         $event->getSubject()->success = false;
-        $this->assertFalse($this->callProtectedMethod('afterSave', [$event], $listener));
+        $this->callProtectedMethod('afterSave', [$event], $listener);
+        $this->assertFalse($event->getResult());
 
         // assert nothing happens if `success` is true but both `created` and `id` are false
         $event->getSubject()->success = true;
         $event->getSubject()->created = false;
         $event->getSubject()->id = false;
-        $this->assertFalse($this->callProtectedMethod('afterSave', [$event], $listener));
+        $this->callProtectedMethod('afterSave', [$event], $listener);
+        $this->assertFalse($event->getResult());
 
         // assert success
         $table = $this->fetchTable('Countries');
@@ -331,7 +333,8 @@ class JsonApiListenerTest extends TestCase
 
         // assert nothing happens if `success` is false
         $event->getSubject()->success = false;
-        $this->assertFalse($this->callProtectedMethod('afterDelete', [$event], $listener));
+        $this->callProtectedMethod('afterDelete', [$event], $listener);
+        $this->assertFalse($event->getResult());
 
         $event->getSubject()->success = true;
         $this->assertNull($this->callProtectedMethod('afterDelete', [$event], $listener));
