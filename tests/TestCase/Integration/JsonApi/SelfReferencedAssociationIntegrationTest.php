@@ -10,7 +10,7 @@ class SelfReferencedAssociationIntegrationTest extends JsonApiBaseTestCase
     /**
      * @return array
      */
-    public function viewProvider()
+    public static function viewProvider(): array
     {
         return [
             'get supercountry with subcountries' => [

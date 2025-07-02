@@ -11,7 +11,7 @@ class SortingIntegrationTest extends JsonApiBaseTestCase
     /**
      * @return array
      */
-    public function sortProvider()
+    public static function sortProvider(): array
     {
         return [
             'unsorted' => [
@@ -92,7 +92,7 @@ class SortingIntegrationTest extends JsonApiBaseTestCase
     /**
      * @return array
      */
-    public function paginationUrlProvider()
+    public static function paginationUrlProvider(): array
     {
         return [
             'pagination' => [

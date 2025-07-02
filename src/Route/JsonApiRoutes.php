@@ -10,6 +10,8 @@ use Cake\ORM\TableRegistry;
 use Cake\Routing\RouteBuilder;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
+use function Cake\Core\pluginSplit;
+use function in_array;
 
 /**
  * Class RouteBuilder
@@ -38,7 +40,7 @@ class JsonApiRoutes
     private static function buildRelationshipLink(
         RouteBuilder $routeBuilder,
         Association $association,
-        array $options
+        array $options,
     ): void {
         $type = $association->getName();
 
@@ -85,7 +87,7 @@ class JsonApiRoutes
 
             $routeBuilder->connect(
                 '/relationships/' . $path,
-                $base + ['_method' => $method]
+                $base + ['_method' => $method],
             );
         }
     }
@@ -96,8 +98,11 @@ class JsonApiRoutes
      * @param array $options Array of options
      * @return void
      */
-    private static function buildAssociationLinks(RouteBuilder $routeBuilder, Association $association, array $options)
-    {
+    private static function buildAssociationLinks(
+        RouteBuilder $routeBuilder,
+        Association $association,
+        array $options,
+    ): void {
         $name = $association->getName();
 
         if (in_array($name, $options['ignoredAssociations'], true)) {
@@ -111,10 +116,10 @@ class JsonApiRoutes
         $from = $association->getSource()->getRegistryAlias();
         $plugin = $routeBuilder->params()['plugin'] ?? null;
 
-        $isOne = \in_array(
+        $isOne = in_array(
             $association->type(),
             [Association::MANY_TO_ONE, Association::ONE_TO_ONE],
-            true
+            true,
         );
 
         $pathName = self::inflect($association->getProperty());
@@ -133,8 +138,8 @@ class JsonApiRoutes
                     $name,
                     $isOne,
                     $from,
-                    $controller
-                ) {
+                    $controller,
+                ): void {
                     $routeBuilder->connect(
                         '/' . $pathName,
                         [
@@ -146,9 +151,9 @@ class JsonApiRoutes
                         ],
                         [
                             '_name' => "CrudJsonApi.{$from}:{$name}",
-                        ]
+                        ],
                     );
-                }
+                },
             );
 
             return;
@@ -165,7 +170,7 @@ class JsonApiRoutes
             ],
             [
                 '_name' => "CrudJsonApi.{$from}:{$name}",
-            ]
+            ],
         );
     }
 
@@ -181,7 +186,7 @@ class JsonApiRoutes
 
         $plugin = $routeBuilder->params()['plugin'] ?? null;
 
-        $routeBuilder->scope('/', function (RouteBuilder $routeBuilder) use ($models, $plugin, $locator) {
+        $routeBuilder->scope('/', function (RouteBuilder $routeBuilder) use ($models, $plugin, $locator): void {
             $routeBuilder->namePrefix('');
 
             foreach ($models as $model => $options) {
@@ -210,7 +215,7 @@ class JsonApiRoutes
                 $associations = $tableObject->associations();
 
                 if ($options['allowedAssociations'] !== false) {
-                    $callback = function (RouteBuilder $routeBuilder) use ($associations, $options) {
+                    $callback = function (RouteBuilder $routeBuilder) use ($associations, $options): void {
                         /** @var \Cake\ORM\Association $association */
                         foreach ($associations as $association) {
                             self::buildAssociationLinks($routeBuilder, $association, $options);
@@ -223,7 +228,7 @@ class JsonApiRoutes
                 $routeBuilder->resources(
                     $model,
                     $options,
-                    $callback
+                    $callback,
                 );
             }
         });

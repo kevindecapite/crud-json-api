@@ -13,13 +13,12 @@ class CurrenciesController extends Controller
 {
     use ControllerTrait;
 
-    public $paginate = ['limit' => 3];
+    public array $paginate = ['limit' => 3];
 
     public function initialize(): void
     {
         parent::initialize();
 
-        $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent(
             'Crud.Crud',
@@ -35,7 +34,7 @@ class CurrenciesController extends Controller
                 'listeners' => [
                     'CrudJsonApi.JsonApi',
                 ],
-            ]
+            ],
         );
     }
 }

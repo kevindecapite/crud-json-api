@@ -28,25 +28,25 @@ class DocumentValidator extends stdClass
      *
      * @var array $_document
      */
-    protected $_document;
+    protected array $_document;
 
     /**
      * @var \Neomerx\JsonApi\Schema\ErrorCollection
      */
-    protected $_errorCollection;
+    protected ErrorCollection $_errorCollection;
 
     /**
      * JsonApiListener config() options
      *
      * @var array
      */
-    protected $_config;
+    protected array $_config;
 
     /**
      * Constructor
      *
-     * @param  array $documentArray  Decoded JSON API document
-     * @param  array $listenerConfig JsonApiListener config() options
+     * @param array $documentArray  Decoded JSON API document
+     * @param array $listenerConfig JsonApiListener config() options
      * @return void
      */
     public function __construct(array $documentArray, array $listenerConfig)
@@ -127,8 +127,8 @@ class DocumentValidator extends stdClass
                 $detail = "Document does not contain top-level member 'data'",
                 $source = [
                 'pointer' => '',
-                ]
-            )
+                ],
+            ),
         );
 
         throw new ValidationException($this->_getErrorCollectionEntity());
@@ -139,7 +139,7 @@ class DocumentValidator extends stdClass
      *
      * @return bool
      */
-    protected function _primaryDataMustHaveType()
+    protected function _primaryDataMustHaveType(): bool
     {
         $path = $this->_getPathObject('data.type');
 
@@ -149,7 +149,7 @@ class DocumentValidator extends stdClass
                 $detail = "Primary data does not contain member 'type'",
                 $status = null,
                 $idx = null,
-                $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-creating')
+                $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-creating'),
             );
 
             return false;
@@ -166,7 +166,7 @@ class DocumentValidator extends stdClass
             $details = "Primary data member 'type' is not a string",
             $status = null,
             $idx = null,
-            $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#document-resource-object-identification')
+            $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#document-resource-object-identification'),
         );
 
         return false;
@@ -187,7 +187,7 @@ class DocumentValidator extends stdClass
                 $detail = "Primary data does not contain member 'id'",
                 $status = null,
                 $idx = null,
-                $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-updating')
+                $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-updating'),
             );
 
             return false;
@@ -204,7 +204,7 @@ class DocumentValidator extends stdClass
             $details = "Primary data member 'id' is not a string",
             $status = null,
             $idx = null,
-            $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#document-resource-object-identification')
+            $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#document-resource-object-identification'),
         );
 
         return false;
@@ -234,7 +234,7 @@ class DocumentValidator extends stdClass
             $details = "Primary data member 'id' is not a valid UUID",
             $status = null,
             $idx = null,
-            $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-creating-client-ids')
+            $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-creating-client-ids'),
         );
 
         return false;
@@ -262,7 +262,7 @@ class DocumentValidator extends stdClass
                 $detail = 'Relationships object does not contain any members',
                 $status = null,
                 $idx = null,
-                $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-creating')
+                $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-creating'),
             );
 
             return false;
@@ -304,10 +304,10 @@ class DocumentValidator extends stdClass
     /**
      * Ensures a relationship object has a 'data' member.
      *
-     * @param string|\stdClass $path Dot separated path of relationship object or path object
+     * @param \stdClass|string $path Dot separated path of relationship object or path object
      * @return bool
      */
-    protected function _relationshipMustHaveData($path): bool
+    protected function _relationshipMustHaveData(string|stdClass $path): bool
     {
         $path = $this->_getPathObject($path);
 
@@ -321,7 +321,7 @@ class DocumentValidator extends stdClass
             $detail = "Relationships object does not contain member 'data'",
             $status = null,
             $idx = null,
-            $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-creating')
+            $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-creating'),
         );
 
         return false;
@@ -331,10 +331,10 @@ class DocumentValidator extends stdClass
      * Checks if relationship object has 'data' member set to null which is
      * allowed by the JSON API spec.
      *
-     * @param string|\stdClass $path Dot separated path of relationship object or path object
+     * @param \stdClass|string $path Dot separated path of relationship object or path object
      * @return bool
      */
-    protected function _relationshipDataIsNull($path): bool
+    protected function _relationshipDataIsNull(string|stdClass $path): bool
     {
         $path = $this->_getPathObject($path);
 
@@ -344,11 +344,11 @@ class DocumentValidator extends stdClass
     /**
      * Ensures a relationship data has a 'type' member.
      *
-     * @param  string          $relationship Singular or plural relationship name
-     * @param string|\stdClass $path Dot separated path of relationship object or path object
+     * @param string          $relationship Singular or plural relationship name
+     * @param \stdClass|string $path Dot separated path of relationship object or path object
      * @return bool
      */
-    protected function _relationshipDataMustHaveType($relationship, $path): bool
+    protected function _relationshipDataMustHaveType(string $relationship, string|stdClass $path): bool
     {
         $path = $this->_getPathObject($path);
 
@@ -372,7 +372,7 @@ class DocumentValidator extends stdClass
                 $detail = "Relationship data does not contain member 'type'",
                 $status = null,
                 $idx = null,
-                $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-creating')
+                $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-creating'),
             );
 
             return false;
@@ -388,7 +388,7 @@ class DocumentValidator extends stdClass
                 $detail = "Relationship data member 'type' is not a string",
                 $status = null,
                 $idx = null,
-                $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-creating')
+                $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-creating'),
             );
 
             return false;
@@ -400,11 +400,11 @@ class DocumentValidator extends stdClass
     /**
      * Ensures relationship data has an 'id' member.
      *
-     * @param  string          $relationship Singular or plural relationship name
-     * @param string|\stdClass $path Dot separated path of relationship object or path object
+     * @param string          $relationship Singular or plural relationship name
+     * @param \stdClass|string $path Dot separated path of relationship object or path object
      * @return bool
      */
-    protected function _relationshipDataMustHaveId(string $relationship, $path): bool
+    protected function _relationshipDataMustHaveId(string $relationship, string|stdClass $path): bool
     {
         $path = $this->_getPathObject($path);
 
@@ -428,7 +428,7 @@ class DocumentValidator extends stdClass
                 $detail = "Relationship data does not contain member 'id'",
                 $status = null,
                 $idx = null,
-                $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-creating')
+                $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-creating'),
             );
 
             return false;
@@ -444,7 +444,7 @@ class DocumentValidator extends stdClass
                 $detail = "Relationship data member 'type' is not a string",
                 $status = null,
                 $idx = null,
-                $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-creating')
+                $aboutLink = $this->_getAboutLink('http://jsonapi.org/format/#crud-creating'),
             );
 
             return false;
@@ -456,10 +456,10 @@ class DocumentValidator extends stdClass
     /**
      * Checks if a document property is a string.
      *
-     * @param  string|\stdClass $path Dot separated path of the property
+     * @param \stdClass|string $path Dot separated path of the property
      * @return bool
      */
-    protected function _isString($path): bool
+    protected function _isString(string|stdClass $path): bool
     {
         $path = $this->_getPathObject($path);
 
@@ -479,11 +479,11 @@ class DocumentValidator extends stdClass
     /**
      * Checks if a document property is a valid UUID.
      *
-     * @param  string|\stdClass $path Dot separated path of the property
+     * @param \stdClass|string $path Dot separated path of the property
      * @return bool
      * @throws \Crud\Error\Exception\CrudException
      */
-    protected function _isUuid($path): bool
+    protected function _isUuid(string|stdClass $path): bool
     {
         $path = $this->_getPathObject($path);
 
@@ -504,10 +504,10 @@ class DocumentValidator extends stdClass
      * Checks if document contains a given property (even when value
      * is `false` or `null`).
      *
-     * @param string|\stdClass $path Dot separated path of the property or a path object
+     * @param \stdClass|string $path Dot separated path of the property or a path object
      * @return bool
      */
-    protected function _hasProperty($path): bool
+    protected function _hasProperty(string|stdClass $path): bool
     {
         if (is_a($path, 'stdClass')) {
             $path = $path->dotted;
@@ -530,11 +530,11 @@ class DocumentValidator extends stdClass
     /**
      * Returns the value for a given document property.
      *
-     * @param string|\stdClass $path Dot separated path of the property or path object
+     * @param \stdClass|string $path Dot separated path of the property or path object
      * @throws \Crud\Error\Exception\CrudException
      * @return mixed
      */
-    protected function _getProperty($path)
+    protected function _getProperty(string|stdClass $path): mixed
     {
         if (is_a($path, 'stdClass')) {
             $path = $path->dotted;
@@ -560,10 +560,10 @@ class DocumentValidator extends stdClass
      * Helper method to create an object with consistent path strings from
      * given dot separated path.
      *
-     * @param string|\stdClass $path Dot separated path or stdClass $path object
+     * @param \stdClass|string $path Dot separated path or stdClass $path object
      * @return \stdClass
      */
-    protected function _getPathObject($path): \stdClass
+    protected function _getPathObject(string|stdClass $path): stdClass
     {
         // return as-is if parameter is
         if (is_a($path, 'stdClass')) {
@@ -594,7 +594,7 @@ class DocumentValidator extends stdClass
     /**
      * Helper method that displays aboutLink only if enabled in Listener config.
      *
-     * @param  string $url URL
+     * @param string $url URL
      * @return \Neomerx\JsonApi\Schema\Link|null
      */
     protected function _getAboutLink(string $url): ?Link
@@ -623,7 +623,7 @@ class DocumentValidator extends stdClass
             'CrudJsonApiListener' => [
                 'NeoMerxErrorCollection' => $this->_errorCollection,
             ],
-            ]
+            ],
         );
 
         return $entity;
@@ -632,10 +632,10 @@ class DocumentValidator extends stdClass
     /**
      * Helper function to determine if string is singular or plural.
      *
-     * @param  string $string Preferably a CakePHP generated name.
+     * @param string $string Preferably a CakePHP generated name.
      * @return bool
      */
-    protected function _stringIsSingular($string): bool
+    protected function _stringIsSingular(string $string): bool
     {
         return Inflector::singularize($string) === $string;
     }

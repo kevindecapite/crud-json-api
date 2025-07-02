@@ -21,6 +21,8 @@ use Crud\Traits\SaveMethodTrait;
 use Crud\Traits\SerializeTrait;
 use Crud\Traits\ViewTrait;
 use Crud\Traits\ViewVarTrait;
+use function Cake\Core\pluginSplit;
+use function Cake\I18n\__;
 
 /**
  * Class RelationshipViewAction
@@ -47,7 +49,7 @@ class RelationshipsAction extends BaseAction
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'enabled' => true,
         'scope' => 'entity',
         'findMethod' => 'all',
@@ -150,7 +152,7 @@ class RelationshipsAction extends BaseAction
     protected function _findRelations(Subject $subject): EntityInterface
     {
         $relationName = $this->_request()->getParam('type');
-        $table = $this->_table();
+        $table = $this->_controller()->fetchTable();
         $association = $table->getAssociation($relationName);
         $targetTable = $association->getTarget();
 
@@ -188,7 +190,7 @@ class RelationshipsAction extends BaseAction
             ->where(
                 [
                     $table->aliasField($primaryKey) => $foreignKeyParam,
-                ]
+                ],
             )
             ->contain([
                 $relationName => [
@@ -202,7 +204,7 @@ class RelationshipsAction extends BaseAction
                 'association' => $association,
                 'repository' => $table,
                 'query' => $primaryQuery,
-            ]
+            ],
         );
         $this->_trigger('beforeFind', $subject);
         $entity = $subject->query->first();
@@ -239,7 +241,7 @@ class RelationshipsAction extends BaseAction
      *
      * @return void
      */
-    protected function _delete()
+    protected function _delete(): void
     {
         $subject = $this->_subject();
         $request = $this->_request();
@@ -272,7 +274,7 @@ class RelationshipsAction extends BaseAction
         $idsToDelete = (array)Hash::extract($data, '{n}.id');
         $foreignRecords = $entity->$property;
         $entity->$property = [];
-        foreach ($foreignRecords as $key => $foreignRecord) {
+        foreach ($foreignRecords as $foreignRecord) {
             if (!in_array($foreignRecord->id, $idsToDelete, false)) {
                 $entity->{$property}[] = $foreignRecord;
             }
@@ -284,7 +286,7 @@ class RelationshipsAction extends BaseAction
             $association->setSaveStrategy('replace');
         }
         $saveMethod = $this->saveMethod();
-        if ($this->_table()->$saveMethod($entity, $this->saveOptions())) {
+        if ($this->_controller()->fetchTable()->$saveMethod($entity, $this->saveOptions())) {
             $this->_success($subject);
 
             return;
@@ -298,7 +300,7 @@ class RelationshipsAction extends BaseAction
      *
      * @return void
      */
-    protected function _post()
+    protected function _post(): void
     {
         $subject = $this->_subject();
         $request = $this->_request();
@@ -333,7 +335,7 @@ class RelationshipsAction extends BaseAction
         $this->_trigger('beforeSave', $subject);
 
         $saveMethod = $this->saveMethod();
-        if ($this->_table()->$saveMethod($entity, $this->saveOptions())) {
+        if ($this->_controller()->fetchTable()->$saveMethod($entity, $this->saveOptions())) {
             $this->_success($subject);
 
             return;
@@ -347,7 +349,7 @@ class RelationshipsAction extends BaseAction
      *
      * @return void
      */
-    protected function _patch()
+    protected function _patch(): void
     {
         $subject = $this->_subject();
         $request = $this->_request();
@@ -363,7 +365,6 @@ class RelationshipsAction extends BaseAction
 
         if (in_array($association->type(), [Association::MANY_TO_ONE, Association::ONE_TO_ONE], true)) {
             //Set the relationship to the corresponding entity
-            /** @psalm-suppress TypeDoesNotContainNull */
             if (array_key_exists('id', $data)) {
                 $entity->{$property} = $foreignTable->get($data['id']);
             } elseif ($data === null) {
@@ -382,7 +383,7 @@ class RelationshipsAction extends BaseAction
             $association->setSaveStrategy('replace');
         }
         $saveMethod = $this->saveMethod();
-        if ($this->_table()->$saveMethod($entity, $this->saveOptions())) {
+        if ($this->_controller()->fetchTable()->$saveMethod($entity, $this->saveOptions())) {
             $this->_success($subject);
 
             return;
@@ -442,7 +443,7 @@ class RelationshipsAction extends BaseAction
             ->where(
                 [
                     $association->aliasField($associationPrimaryKey) . ' in' => $idsToAdd,
-                ]
+                ],
             )
             ->all();
 
@@ -450,13 +451,13 @@ class RelationshipsAction extends BaseAction
             $foundIds = $foreignRecords->extract(
                 static function ($record) {
                     return $record->id;
-                }
+                },
             )
                 ->toArray();
             $missingIds = array_diff($idsToAdd, $foundIds);
 
             throw new RecordNotFoundException(
-                __('Not all requested records could be found. Missing IDs are {0}', implode(', ', $missingIds))
+                __('Not all requested records could be found. Missing IDs are {0}', implode(', ', $missingIds)),
             );
         }
 

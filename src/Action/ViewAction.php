@@ -17,7 +17,7 @@ class ViewAction extends BaseViewAction
      * @return void
      * @throws \Exception
      */
-    protected function _handle(?string $id = null): void
+    protected function _handle(string|int|null $id = null): void
     {
         $request = $this->_request();
         $from = $request->getParam('from');
@@ -44,16 +44,16 @@ class ViewAction extends BaseViewAction
      */
     protected function _findRecordViaRelated(Subject $subject): EntityInterface
     {
-        $repository = $this->_table();
+        $repository = $this->_controller()->fetchTable();
 
-        [$finder, $options] = $this->_extractFinder();
-        $query = $repository->find($finder, $options);
+        [$finder] = $this->_extractFinder();
+        $query = $repository->find($finder);
 
         $subject->set(
             [
                 'repository' => $repository,
                 'query' => $query,
-            ]
+            ],
         );
 
         $this->_trigger('beforeFind', $subject);

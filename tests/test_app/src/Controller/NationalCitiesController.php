@@ -18,7 +18,6 @@ class NationalCitiesController extends Controller
     {
         parent::initialize();
 
-        $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent(
             'Crud.Crud',
@@ -35,7 +34,7 @@ class NationalCitiesController extends Controller
                     'CrudJsonApi.JsonApi',
                     'CrudJsonApi.Pagination',
                 ],
-            ]
+            ],
         );
     }
 

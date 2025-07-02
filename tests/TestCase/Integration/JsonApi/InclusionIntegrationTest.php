@@ -12,7 +12,7 @@ class InclusionIntegrationTest extends JsonApiBaseTestCase
     /**
      * @return array
      */
-    public function inclusionProvider()
+    public static function inclusionProvider(): array
     {
         return [
             // assert single-word associations

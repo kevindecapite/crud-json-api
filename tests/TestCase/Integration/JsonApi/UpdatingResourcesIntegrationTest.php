@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace CrudJsonApi\Test\TestCase\Integration\JsonApi;
 
-use Cake\ORM\TableRegistry;
 use Cake\Utility\Inflector;
 use CrudJsonApi\Test\TestCase\Integration\JsonApiBaseTestCase;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
@@ -20,7 +19,7 @@ class UpdatingResourcesIntegrationTest extends JsonApiBaseTestCase
      *
      * @return array
      */
-    public function updateResourceProvider()
+    public static function updateResourceProvider(): array
     {
         return [
             # changing USD to RUB
@@ -179,7 +178,7 @@ class UpdatingResourcesIntegrationTest extends JsonApiBaseTestCase
         $recordId = $matches[2];
 
         # assert the database record got updated like expected
-        $table = TableRegistry::get($tableName);
+        $table = $this->fetchTable($tableName);
         $record = $table->get($recordId)->toArray();
 
         $this->assertArraySubset($expectedRecordSubset, $record);

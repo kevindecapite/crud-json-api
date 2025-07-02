@@ -5,9 +5,10 @@ parameters:
 	level: 6
 	paths:
 		- src
-	checkMissingIterableValueType: false
-	checkGenericClassInNonGenericObjectType: false
 	universalObjectCratesClasses:
 		- Crud\Event\Subject
 	bootstrapFiles:
 		- vendor/cakephp/cakephp/src/Core/Exception/CakeException.php
+	ignoreErrors:
+		- identifier: missingType.iterableValue
+		- identifier: missingType.generics

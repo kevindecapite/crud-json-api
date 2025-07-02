@@ -580,9 +580,9 @@ class DocumentValidatorTest extends TestCase
         $obj = $this->callProtectedMethod('_getPathObject', ['data'], $this->_validator);
 
         $this->assertTrue(is_a($obj, 'stdClass'));
-        $this->assertObjectHasAttribute('dotted', $obj);
-        $this->assertObjectHasAttribute('toKey', $obj);
-        $this->assertObjectHasAttribute('key', $obj);
+        $this->assertObjectHasProperty('dotted', $obj);
+        $this->assertObjectHasProperty('toKey', $obj);
+        $this->assertObjectHasProperty('key', $obj);
 
         // assert single-level path
         $this->assertEquals('data', $obj->dotted);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace CrudJsonApi\Listener;
 
 use Cake\Event\EventInterface;
-use Cake\ORM\Table;
 use Crud\Listener\BaseListener;
 use RuntimeException;
 
@@ -15,7 +14,7 @@ class SearchListener extends BaseListener
      *
      * @var array
      */
-    protected $_defaultConfig = [
+    protected array $_defaultConfig = [
         'enabled' => [
             'Crud.beforeLookup',
             'Crud.beforePaginate',
@@ -40,7 +39,7 @@ class SearchListener extends BaseListener
     /**
      * Inject search conditions into the query object.
      *
-     * @param  \Cake\Event\EventInterface $event Event
+     * @param \Cake\Event\EventInterface $event Event
      * @return void
      */
     public function injectSearch(EventInterface $event): void
@@ -49,13 +48,13 @@ class SearchListener extends BaseListener
             return;
         }
 
-        $repository = $this->_table();
-        if ($repository instanceof Table && !$repository->behaviors()->has('Search')) {
+        $repository = $this->_controller()->fetchTable();
+        if (!$repository->behaviors()->has('Search')) {
             throw new RuntimeException(
                 sprintf(
                     'Missing Search.Search behavior on %s',
-                    get_class($repository)
-                )
+                    get_class($repository),
+                ),
             );
         }
 

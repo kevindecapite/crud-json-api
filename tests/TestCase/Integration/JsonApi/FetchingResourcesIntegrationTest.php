@@ -13,7 +13,7 @@ class FetchingResourcesIntegrationTest extends JsonApiBaseTestCase
      *
      * @return array
      */
-    public function fetchResourceProvider()
+    public static function fetchResourceProvider(): array
     {
         return [
             'fetch-single-word-resource-with-no-relationships' => [
@@ -67,7 +67,7 @@ class FetchingResourcesIntegrationTest extends JsonApiBaseTestCase
      *
      * @return array
      */
-    public function fetchNestedResourceProvider()
+    public static function fetchNestedResourceProvider(): array
     {
         return [
             'fetch-one-to-many-relation' => [
@@ -100,7 +100,7 @@ class FetchingResourcesIntegrationTest extends JsonApiBaseTestCase
                 'headers' => [
                     'Accept' => 'application/vnd.api+json',
                 ],
-            ]
+            ],
         );
 
         # execute the GET request

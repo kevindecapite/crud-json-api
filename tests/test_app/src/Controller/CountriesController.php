@@ -13,13 +13,12 @@ class CountriesController extends Controller
 {
     use ControllerTrait;
 
-    public $paginate = ['limit' => 3];
+    public array $paginate = ['limit' => 3];
 
     public function initialize(): void
     {
         parent::initialize();
 
-        $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
         $this->loadComponent(
             'Crud.Crud',
@@ -37,7 +36,7 @@ class CountriesController extends Controller
                                      'CrudJsonApi.Pagination',
                                      'Crud.Search',
                                  ],
-            ]
+            ],
         );
     }
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace CrudJsonApi\Listener;
 
+use Cake\Datasource\Paging\PaginatedInterface;
 use Cake\Event\EventInterface;
 use Cake\Routing\Router;
 use Crud\Listener\ApiPaginationListener as BaseListener;
@@ -38,29 +39,37 @@ class PaginationListener extends BaseListener
     /**
      * Appends the pagination information to the JSON or XML output
      *
-     * @param  \Cake\Event\EventInterface $event Event
+     * @param \Cake\Event\EventInterface $event Event
      * @return void
      */
     public function beforeRender(EventInterface $event): void
     {
-        $paging = $this->_request()->getAttribute('paging');
+        $viewVar = 'data';
+        $action = $this->_action();
 
-        if (empty($paging)) {
+        if (method_exists($action, 'viewVar')) {
+            $viewVar = $action->viewVar();
+        }
+
+        $paginatedResultset = $this
+            ->_controller()
+            ->viewBuilder()
+            ->getVar($viewVar);
+
+        if (!$paginatedResultset instanceof PaginatedInterface) {
             return;
         }
 
-        $pagination = current($paging);
-        if (empty($pagination)) {
-            return;
-        }
-
-        $this->_controller->viewBuilder()->setOption('pagination', $this->_getJsonApiPaginationResponse($pagination));
+        $this
+            ->_controller()
+            ->viewBuilder()
+            ->setOption('pagination', $this->_getJsonApiPaginationResponse($paginatedResultset->pagingParams()));
     }
 
     /**
      * Generates pagination viewVars with JSON API compatible hyperlinks.
      *
-     * @param  array $pagination CakePHP pagination result
+     * @param array $pagination CakePHP pagination result
      * @return array
      */
     protected function _getJsonApiPaginationResponse(array $pagination): array
@@ -72,7 +81,7 @@ class PaginationListener extends BaseListener
             'page' => null,
             'limit' => null,
             ],
-            $pagination
+            $pagination,
         );
 
         $request = $this->_request();
@@ -86,7 +95,6 @@ class PaginationListener extends BaseListener
             $query['sort'] = $request->getQuery('sort');
         }
 
-        /** @psalm-suppress UndefinedMagicPropertyFetch */
         $fullBase = (bool)$this->_controller()->Crud->getConfig('listeners.jsonApi.absoluteLinks');
 
         $baseUrl = $request->getAttributes()['params'];
@@ -94,42 +102,42 @@ class PaginationListener extends BaseListener
 
         $self = Router::url(
             $baseUrl + [
-            '?' => ['page' => $pagination['page']] + $query,
+            '?' => ['page' => $pagination['currentPage']] + $query,
             ],
-            $fullBase
+            $fullBase,
         );
 
         $first = Router::url(
             $baseUrl + [
             '?' => ['page' => 1] + $query,
             ],
-            $fullBase
+            $fullBase,
         );
 
         $last = Router::url(
             $baseUrl + [
             '?' => ['page' => $pagination['pageCount']] + $query,
             ],
-            $fullBase
+            $fullBase,
         );
 
         $prev = null;
-        if ($pagination['prevPage']) {
+        if ($pagination['hasPrevPage']) {
             $prev = Router::url(
                 $baseUrl + [
-                '?' => ['page' => $pagination['page'] - 1] + $query,
+                '?' => ['page' => $pagination['currentPage'] - 1] + $query,
                 ],
-                $fullBase
+                $fullBase,
             );
         }
 
         $next = null;
-        if ($pagination['nextPage']) {
+        if ($pagination['hasNextPage']) {
             $next = Router::url(
                 $baseUrl + [
-                '?' => ['page' => $pagination['page'] + 1] + $query,
+                '?' => ['page' => $pagination['currentPage'] + 1] + $query,
                 ],
-                $fullBase
+                $fullBase,
             );
         }
 
@@ -139,7 +147,7 @@ class PaginationListener extends BaseListener
             'last' => $last,
             'prev' => $prev,
             'next' => $next,
-            'record_count' => $pagination['count'],
+            'record_count' => $pagination['totalCount'],
             'page_count' => $pagination['pageCount'],
             'page_limit' => $pagination['limit'],
         ];
